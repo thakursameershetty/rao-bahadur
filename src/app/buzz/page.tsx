@@ -31,17 +31,6 @@ export default function BuzzPage() {
           The world is talking about the twist. Don't let it be spoiled for you.
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-8"
-        >
-          <Button variant="regal" size="lg" className="w-full sm:w-auto min-w-[200px] flex items-center gap-2">
-            <Ticket className="w-5 h-5" />
-            Book Tickets
-          </Button>
-        </motion.div>
       </div>
 
       {/* Trailer Embed */}
@@ -62,6 +51,19 @@ export default function BuzzPage() {
             allowFullScreen
           ></iframe>
         </div>
+      </motion.div>
+
+      {/* Book Tickets */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4"
+      >
+        <Button variant="regal" size="lg" className="w-full sm:w-auto min-w-[200px] flex items-center justify-center gap-2 shadow-glow">
+          <Ticket className="w-5 h-5" />
+          Book Tickets
+        </Button>
       </motion.div>
 
       <div className="space-y-10">
