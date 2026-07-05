@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import useSWR from "swr";
-import { Tweet } from "@/components/ui/tweet";
+import { Tweet, TweetSkeleton } from "@/components/ui/tweet";
 import { SessionModal } from "@/components/ui/SessionModal";
 import { useSession } from "@/hooks/useSession";
 import { useEffect } from "react";
@@ -141,7 +141,7 @@ export default function FanPage() {
         {!theories ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[...Array(6)].map((_, i) => (
-              <div key={i} className="w-full h-48 bg-card/10 backdrop-blur-sm rounded-xl animate-pulse border border-border/10" />
+              <TweetSkeleton key={i} />
             ))}
           </div>
         ) : filteredTheories.length === 0 ? (

@@ -400,3 +400,48 @@ export const Tweet = ({
     />
   );
 };
+
+export const TweetSkeleton = () => {
+  return (
+    <div className="w-full h-full rounded-2xl bg-card/40 backdrop-blur-sm border border-border/50 p-6 shadow-sm flex flex-col justify-between animate-pulse min-h-[300px]">
+      <div>
+        {/* Header Skeleton */}
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-2">
+            <div className="size-[38px] shrink-0 rounded-full bg-border/40" />
+            <div className="flex flex-col gap-2">
+              <div className="h-4 w-24 bg-border/40 rounded" />
+              <div className="h-3 w-16 bg-border/40 rounded" />
+            </div>
+          </div>
+          <div className="size-5 bg-border/40 rounded" />
+        </div>
+        
+        {/* Body Skeleton */}
+        <div className="mt-5 flex flex-col gap-3">
+          <div className="h-5 w-3/4 bg-border/40 rounded" />
+          <div className="flex flex-col gap-2 mt-2">
+            <div className="h-4 w-full bg-border/40 rounded" />
+            <div className="h-4 w-[90%] bg-border/40 rounded" />
+            <div className="h-4 w-[80%] bg-border/40 rounded" />
+          </div>
+        </div>
+      </div>
+      
+      {/* Footer Skeleton */}
+      <div className="mt-6">
+        <div className="flex items-center justify-between">
+          <div className="h-3 w-32 bg-border/40 rounded" />
+        </div>
+        <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4">
+          <div className="flex items-center gap-2">
+            <div className="h-10 w-16 bg-border/40 rounded-full" />
+            <div className="h-10 w-16 bg-border/40 rounded-full" />
+          </div>
+          <div className="h-10 w-10 bg-border/40 rounded-full" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
