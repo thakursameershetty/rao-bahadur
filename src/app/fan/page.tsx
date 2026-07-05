@@ -86,7 +86,7 @@ export default function FanPage() {
 
       {/* Sticky Tabs */}
       <div
-        className={`sticky top-0 z-40 pt-4 pb-0 mb-4 transition-all duration-300 ${isScrolled
+        className={`sticky top-0 z-50 pt-4 pb-0 mb-4 transition-all duration-300 ${isScrolled
           ? "bg-background/30 backdrop-blur-2xl border-b border-border/10 shadow-sm"
           : "bg-transparent border-transparent"
           }`}

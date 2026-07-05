@@ -31,11 +31,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground relative">
-        <ProgressiveBlur position="top" />
-        <ProgressiveBlur position="bottom" />
-
         <FloatingBackButton />
         <main className="flex-grow flex flex-col relative z-10">
+          <ProgressiveBlur position="top" />
+          <ProgressiveBlur position="bottom" />
           {children}
         </main>
       </body>
