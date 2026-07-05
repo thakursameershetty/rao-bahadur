@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function ScrollToTop() {
@@ -39,7 +38,9 @@ export function ScrollToTop() {
           className="fixed bottom-6 right-6 z-[100] p-3 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-gold shadow-lg hover:bg-primary/40 hover:scale-110 transition-all duration-300"
           aria-label="Scroll to top"
         >
-          <ArrowUp size={24} />
+          <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="m18 15-6-6-6 6"/>
+          </svg>
         </motion.button>
       )}
     </AnimatePresence>
