@@ -27,7 +27,7 @@ function LoveCounter() {
         >
           <span className="text-3xl md:text-5xl drop-shadow-[0_0_15px_rgba(255,50,50,0.8)]">❤️</span>
         </motion.div>
-        <div className="font-display text-3xl md:text-6xl tabular-nums text-gold tracking-wide">
+        <div className="font-display text-4xl md:text-7xl font-medium tabular-nums text-gold tracking-wide leading-none flex items-center">
           {count.toLocaleString()}
         </div>
       </div>
