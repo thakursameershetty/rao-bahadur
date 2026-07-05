@@ -41,11 +41,28 @@ export default function BuzzPage() {
             <Ticket className="w-5 h-5" />
             Book Tickets
           </Button>
-          <Button variant="outline" size="lg" className="w-full sm:w-auto min-w-[200px]">
-            Watch Trailer
-          </Button>
         </motion.div>
       </div>
+
+      {/* Trailer Embed */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.6, duration: 0.8 }}
+        className="w-full max-w-4xl mx-auto rounded-[2rem] overflow-hidden border border-primary/20 shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-card/10 backdrop-blur-sm p-2"
+      >
+        <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
+          <iframe 
+            className="absolute inset-0 w-full h-full"
+            src="https://www.youtube.com/embed/3qSIgQxpoqM?si=IhA4GTk-e-r7hnUV" 
+            title="YouTube video player" 
+            frameBorder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerPolicy="strict-origin-when-cross-origin" 
+            allowFullScreen
+          ></iframe>
+        </div>
+      </motion.div>
 
       <div className="space-y-10">
         <h2 className="font-serif text-3xl text-center text-primary">Viral Reactions</h2>
