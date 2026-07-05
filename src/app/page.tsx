@@ -19,19 +19,19 @@ function LoveCounter() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center sm:items-start justify-center space-y-1 drop-shadow-lg">
+    <div className="flex flex-col items-center md:items-start justify-center space-y-1 drop-shadow-lg">
       <div className="flex items-center gap-3">
         <motion.div
           animate={{ scale: [1, 1.2, 1.1, 1.25, 1] }}
           transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
         >
-          <span className="text-4xl md:text-5xl drop-shadow-[0_0_15px_rgba(255,50,50,0.8)]">❤️</span>
+          <span className="text-3xl md:text-5xl drop-shadow-[0_0_15px_rgba(255,50,50,0.8)]">❤️</span>
         </motion.div>
-        <div className="font-display text-4xl md:text-6xl tabular-nums text-gold tracking-wide">
+        <div className="font-display text-3xl md:text-6xl tabular-nums text-gold tracking-wide">
           {count.toLocaleString()}
         </div>
       </div>
-      <div className="text-xs md:text-sm text-foreground/80 uppercase tracking-widest pl-11 font-medium">
+      <div className="text-[10px] md:text-sm text-foreground/80 uppercase tracking-widest md:pl-11 font-medium text-center md:text-left">
         Hearts beating for Rao Bahadur
       </div>
     </div>
@@ -80,55 +80,70 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col overflow-x-hidden">
       {/* Hero Section */}
-      <div className="relative w-full min-h-[90vh] flex items-center pt-20 pb-12">
+      <div className="relative w-full h-[100dvh] md:min-h-[90vh] flex flex-col justify-between md:justify-center items-center md:items-start pt-24 pb-12">
         <div className="absolute inset-0 z-0">
           <Image
             src="/hero-bg.png"
             alt="Rao Bahadur Hero"
             fill
             priority
-            className="object-cover object-center"
+            className="object-cover object-center hidden md:block"
+          />
+          <Image
+            src="/hero-bg-mobile.png"
+            alt="Rao Bahadur Hero Mobile"
+            fill
+            priority
+            className="object-cover object-center block md:hidden"
           />
           {/* Keep only bottom gradient for seamless transition to the next section */}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 flex flex-col items-start text-left">
+        <div className="container mx-auto px-4 relative z-10 flex flex-col h-full justify-between md:justify-center items-center md:items-start text-center md:text-left">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-4 md:gap-6 mt-8 md:mt-0"
           >
             <div>
-              <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold text-gradient-gold mb-4 uppercase tracking-wider leading-tight drop-shadow-2xl">
+              <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-gold mb-4 uppercase tracking-wider leading-tight drop-shadow-2xl">
                 I Root for<br />Rao Bahadur
               </h1>
-              <p className="font-sans text-sm md:text-base lg:text-lg text-foreground/90 max-w-2xl drop-shadow-md">
+              <p className="font-sans text-xs sm:text-sm md:text-base lg:text-lg text-foreground/90 max-w-2xl drop-shadow-md mx-auto md:mx-0 px-2 md:px-0">
                 The turban tightens. The peacocks watch. A film that has set the screen on fire — and its people, on their feet.
               </p>
             </div>
-
-            <LoveCounter />
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-8"
-          >
-            <Link href="/entry" passHref>
-              <Button variant="regal" size="lg" className="rounded-full shadow-glow">
-                Enter the Fandom
-              </Button>
-            </Link>
-            <Link href="/buzz" passHref>
-              <Button variant="outline" size="lg" className="rounded-full border-primary/30 text-primary hover:bg-primary/10">
-                See the Buzz
-              </Button>
-            </Link>
-          </motion.div>
+          <div className="flex flex-col items-center md:items-start mt-auto md:mt-8 gap-8 md:gap-8 w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
+              <LoveCounter />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 1 }}
+              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 w-full md:w-auto"
+            >
+              <Link href="/entry" passHref className="w-full sm:w-auto">
+                <Button variant="regal" size="lg" className="rounded-full shadow-glow w-full sm:w-auto">
+                  Enter the Fandom
+                </Button>
+              </Link>
+              <Link href="/buzz" passHref className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="rounded-full border-primary/30 text-primary hover:bg-primary/10 w-full sm:w-auto">
+                  See the Buzz
+                </Button>
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </div>
 
