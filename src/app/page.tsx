@@ -242,7 +242,7 @@ export default function LandingPage() {
                   Enter the Fandom
                 </Button>
               </Link>
-              <Link href="/buzz" passHref className="w-full sm:w-auto">
+              <Link href="#buzz" passHref className="w-full sm:w-auto">
                 <Button variant="outline" size="lg" className="rounded-full border-primary/30 text-primary hover:bg-primary/10 w-full sm:w-auto">
                   See the Buzz
                 </Button>
@@ -254,7 +254,7 @@ export default function LandingPage() {
 
       <TweetMarquee />
 
-      <div className="container mx-auto px-4 py-20 space-y-24">
+      <div id="buzz" className="container mx-auto px-4 py-20 space-y-24">
         {/* Celeb Reactions */}
         <CelebrityReactions />
 
