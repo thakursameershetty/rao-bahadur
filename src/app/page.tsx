@@ -66,6 +66,9 @@ function HourlySalesIndicator({ sales }: { sales: number }) {
       transition={{ delay: 0.5, duration: 0.8 }}
       className="mt-6 flex flex-wrap items-center gap-4"
     >
+      {/* Subtle Divider */}
+      <div className="h-px w-8 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent"></div>
+
       <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 shadow-lg">
 
         {/* Overlapping Logos */}
@@ -94,6 +97,8 @@ function HourlySalesIndicator({ sales }: { sales: number }) {
         </div>
 
       </div>
+
+      <div className="h-px w-8 bg-gradient-to-r from-[#D4AF37]/50 via-transparent to-transparent"></div>
     </motion.div>
   );
 }
