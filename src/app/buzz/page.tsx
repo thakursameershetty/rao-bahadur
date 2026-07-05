@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
@@ -69,23 +71,16 @@ export default function BuzzPage() {
       <div className="space-y-10">
         <h2 className="font-serif text-3xl text-center text-primary">Viral Reactions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {celebs.map((celeb: Celeb) => (
-            <Card key={celeb.id} className="bg-card/40 border-border/50">
-              <CardContent className="pt-6 space-y-4">
-                <blockquote className="text-sm text-foreground/90 italic">
-                  "{celeb.quote}"
-                </blockquote>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-accent text-accent-foreground flex items-center justify-center font-bold text-sm">
-                    {celeb.initial}
-                  </div>
-                  <div>
-                    <div className="font-bold text-primary text-sm">{celeb.name}</div>
-                    <div className="text-xs text-muted-foreground">{celeb.role}</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          {Array.from({ length: 15 }).map((_, i) => (
+            <div key={i} className="relative w-full rounded-2xl overflow-hidden shadow-lg border border-primary/20 bg-card/10 backdrop-blur-sm group">
+              <Image
+                src={`/Event/letterboxd/letterboxd ${i + 1}.jpg`}
+                alt={`Viral Reaction ${i + 1}`}
+                width={500}
+                height={800}
+                className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
           ))}
         </div>
       </div>
