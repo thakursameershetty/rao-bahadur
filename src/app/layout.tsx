@@ -30,9 +30,27 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground relative">
-        {/* Global Gaussian Blurs */}
-        <div className="fixed top-[-100px] left-1/2 -translate-x-1/2 w-[80%] max-w-[800px] h-[300px] bg-accent/20 rounded-full blur-[120px] pointer-events-none z-0" />
-        <div className="fixed bottom-[-100px] left-1/2 -translate-x-1/2 w-[80%] max-w-[800px] h-[300px] bg-primary/10 rounded-full blur-[120px] pointer-events-none z-0" />
+        {/* Progressive Blur Effects */}
+        <div className="progressive-blur-top">
+          <div className="pbt-1"></div>
+          <div className="pbt-2"></div>
+          <div className="pbt-3"></div>
+          <div className="pbt-4"></div>
+          <div className="pbt-5"></div>
+          <div className="pbt-6"></div>
+          <div className="pbt-7"></div>
+          <div className="pbt-8"></div>
+        </div>
+        <div className="progressive-blur-bottom">
+          <div className="pbb-1"></div>
+          <div className="pbb-2"></div>
+          <div className="pbb-3"></div>
+          <div className="pbb-4"></div>
+          <div className="pbb-5"></div>
+          <div className="pbb-6"></div>
+          <div className="pbb-7"></div>
+          <div className="pbb-8"></div>
+        </div>
 
         <FloatingBackButton />
         <main className="flex-grow flex flex-col relative z-10">
