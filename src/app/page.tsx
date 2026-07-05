@@ -39,10 +39,24 @@ function LoveCounter() {
 }
 
 const celebTweetImages = [
+  // Celebrity Tweets
   "/Event/celebrity_tweets/Tweets 11.jpg",
   "/Event/celebrity_tweets/Tweets 23.jpg",
   "/Event/celebrity_tweets/Tweets 27.jpg",
   "/Event/celebrity_tweets/Tweets 28.jpg",
+  
+  // Fan Tweets
+  "/Event/Tweets/Tweets 2.jpg",
+  "/Event/Tweets/Tweets 9.jpg",
+  "/Event/Tweets/Tweets 10.jpg",
+  "/Event/Tweets/Tweets 19.jpg",
+  "/Event/Tweets/Tweets 24.jpg",
+  "/Event/Tweets/Tweets 26.jpg",
+  "/Event/Tweets/Tweets 30.jpg",
+  "/Event/Tweets/Tweets 31.jpg",
+  "/Event/Tweets/Tweets 32.jpg",
+  "/Event/Tweets/Tweets 33.jpg",
+  "/Event/Tweets/Tweets 34.jpg",
 ];
 
 function TweetMarquee() {
@@ -63,12 +77,12 @@ function TweetMarquee() {
         <div className="flex space-x-6 px-4 items-center">
           {[...celebTweetImages, ...celebTweetImages, ...celebTweetImages].map((imgSrc, i) => (
             <div key={`${i}`} className="relative w-[300px] sm:w-[380px] h-auto flex-shrink-0 rounded-xl overflow-hidden border border-primary/20 shadow-lg bg-card/20 backdrop-blur-sm group">
-              <Image 
-                src={imgSrc} 
-                alt="Celebrity Tweet" 
-                width={380} 
-                height={200} 
-                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" 
+              <Image
+                src={imgSrc}
+                alt="Celebrity Tweet"
+                width={380}
+                height={200}
+                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
           ))}
