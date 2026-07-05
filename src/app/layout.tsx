@@ -3,6 +3,7 @@ import { Inter, Cinzel } from "next/font/google";
 import "./globals.css";
 import { FloatingBackButton } from "@/components/ui/FloatingBackButton";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,6 +33,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground relative">
         <FloatingBackButton />
+        <ScrollToTop />
         <main className="flex-grow flex flex-col relative z-10">
           <ProgressiveBlur position="top" />
           <ProgressiveBlur position="bottom" />
