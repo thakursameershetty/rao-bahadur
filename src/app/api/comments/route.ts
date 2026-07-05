@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       orderBy: { createdAt: 'asc' }
     });
 
-    const formatted = comments.map(c => ({
+    const formatted = comments.map((c: any) => ({
       id: c.id,
       theoryId: c.theoryId,
       author: c.author,
