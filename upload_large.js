@@ -12,23 +12,25 @@ async function main() {
   try {
     const fullPath = 'public/event/videos/Rahul Ravindran.mp4';
     console.log(`Uploading ${fullPath}...`);
-    const result = await cloudinary.uploader.upload_large(fullPath, {
-      resource_type: "auto",
+
+    cloudinary.uploader.upload_large(fullPath, {
+      resource_type: "video",
       folder: 'raobahadur/event/videos',
       use_filename: true,
       unique_filename: false,
-      overwrite: true
+      overwrite: true,
+      chunk_size: 6000000
+    }, function (error, result) {
+      if (error) {
+        console.error('Error in callback:', error);
+      } else {
+        console.log('Result callback:', result);
+        console.log('Secure URL:', result.secure_url);
+      }
     });
-    console.log(`Uploaded to ${result.secure_url}`);
 
-    // update mappings
-    const mappings = JSON.parse(fs.readFileSync('cloudinary_mappings.json', 'utf8'));
-    const localPath = fullPath.replace('public', '').replace(/\\/g, '/');
-    mappings[localPath] = result.secure_url;
-    fs.writeFileSync('cloudinary_mappings.json', JSON.stringify(mappings, null, 2));
-    console.log('Mappings updated');
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Catch Error:', err);
   }
 }
 
