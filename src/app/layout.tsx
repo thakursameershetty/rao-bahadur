@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${cinzel.variable} antialiased dark`}
+      className={`${inter.variable} ${cinzel.variable} antialiased dark scroll-smooth`}
       suppressHydrationWarning
     >
       <body className="min-h-screen flex flex-col bg-background text-foreground relative">
