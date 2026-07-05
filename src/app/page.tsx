@@ -242,11 +242,14 @@ export default function LandingPage() {
                   Enter the Fandom
                 </Button>
               </Link>
-              <Link href="#buzz" passHref className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="rounded-full border-primary/30 text-primary hover:bg-primary/10 w-full sm:w-auto">
-                  See the Buzz
-                </Button>
-              </Link>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="rounded-full border-primary/30 text-primary hover:bg-primary/10 w-full sm:w-auto"
+                onClick={() => document.getElementById('buzz')?.scrollIntoView({ behavior: 'smooth' })}
+              >
+                See the Buzz
+              </Button>
             </motion.div>
           </div>
         </div>
