@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Theory {
+  id        String   @id @default(uuid())
+  title     String
+  excerpt   String
+  content   String   @db.Text
+  author    String
+  tag       String
+  upvotes   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  theoryId  String
+  author    String
+  text      String   @db.Text
+  upvotes   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  theory    Theory   @relation(fields: [theoryId], references: [id], onDelete: Cascade)
+}
