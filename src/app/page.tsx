@@ -61,7 +61,7 @@ const celebTweetImages = [
 
 function TweetMarquee() {
   return (
-    <div className="w-full overflow-hidden whitespace-nowrap py-20 border-y border-border/30 relative">
+    <div id="buzz" className="w-full overflow-hidden whitespace-nowrap py-20 border-y border-border/30 relative">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent pointer-events-none" />
 
       <div className="relative z-10 flex flex-col items-center mb-12 whitespace-normal px-4">
@@ -257,7 +257,7 @@ export default function LandingPage() {
 
       <TweetMarquee />
 
-      <div id="buzz" className="container mx-auto px-4 py-20 space-y-24">
+      <div className="container mx-auto px-4 py-20 space-y-24">
         {/* Celeb Reactions */}
         <CelebrityReactions />
 
