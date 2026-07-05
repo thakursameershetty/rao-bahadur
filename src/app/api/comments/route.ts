@@ -35,7 +35,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { theoryId, author, text } = body;
-    
+
     if (!theoryId || !author || !text) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
