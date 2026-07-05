@@ -138,7 +138,13 @@ export default function FanPage() {
 
       {/* Feed */}
       <div className="container mx-auto px-4 py-8 max-w-6xl min-h-[100vh]">
-        {filteredTheories.length === 0 ? (
+        {!theories ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="w-full h-48 bg-card/10 backdrop-blur-sm rounded-xl animate-pulse border border-border/10" />
+            ))}
+          </div>
+        ) : filteredTheories.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
             No theories found for this filter.
           </div>

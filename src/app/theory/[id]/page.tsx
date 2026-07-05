@@ -58,7 +58,33 @@ export default function TheoryPage() {
   };
 
   if (!theory) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen pb-40 container mx-auto px-4 max-w-3xl pt-28 space-y-8 animate-pulse">
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <div className="w-24 h-6 bg-card/10 rounded-sm" />
+            <div className="w-3/4 h-12 md:h-14 bg-card/10 rounded-md mt-4" />
+            <div className="flex items-center gap-4 mt-8">
+              <div className="w-12 h-12 rounded-full bg-card/10" />
+              <div className="space-y-2">
+                <div className="w-32 h-4 bg-card/10 rounded" />
+                <div className="w-24 h-3 bg-card/10 rounded" />
+              </div>
+            </div>
+          </div>
+          <div className="h-px w-full bg-border/30 my-8" />
+          <div className="space-y-4 pt-4">
+            <div className="w-full h-4 bg-card/10 rounded" />
+            <div className="w-full h-4 bg-card/10 rounded" />
+            <div className="w-11/12 h-4 bg-card/10 rounded" />
+            <div className="w-full h-4 bg-card/10 rounded" />
+            <div className="w-4/5 h-4 bg-card/10 rounded" />
+            <div className="w-full h-4 bg-card/10 rounded" />
+            <div className="w-3/4 h-4 bg-card/10 rounded" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const handlePostComment = async () => {
