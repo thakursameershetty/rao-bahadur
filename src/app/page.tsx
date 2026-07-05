@@ -146,7 +146,7 @@ function VideoCard({ src, title, isActive, onPlayClick, onEnded }: { src: string
 
   return (
     <div
-      className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden border border-primary/20 shadow-[0_20px_60px_rgba(0,0,0,0.1)] bg-card/20 backdrop-blur-sm cursor-pointer group"
+      className="relative w-full aspect-video rounded-2xl overflow-hidden border border-primary/20 shadow-[0_20px_60px_rgba(0,0,0,0.1)] bg-card/20 backdrop-blur-sm cursor-pointer group"
       onClick={onPlayClick}
     >
       <video
