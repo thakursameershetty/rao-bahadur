@@ -1,12 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
-import { Heart, Star } from "lucide-react";
+import { Heart, Star, VolumeX, Volume2 } from "lucide-react";
 import { Celeb, Review } from "@/data/mock";
 
 function LoveCounter() {
@@ -88,6 +88,47 @@ function TweetMarquee() {
           ))}
         </div>
       </motion.div>
+    </div>
+  );
+}
+
+function VideoCard({ src, title }: { src: string, title: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  return (
+    <div
+      className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden border border-primary/20 shadow-[0_20px_60px_rgba(0,0,0,0.1)] bg-card/20 backdrop-blur-sm cursor-pointer group"
+      onClick={toggleMute}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        autoPlay
+        loop
+        muted={isMuted}
+        playsInline
+        preload="metadata"
+        className="w-full h-full object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] scale-100 group-hover:scale-[1.02]"
+      />
+
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center pointer-events-none">
+        <div className={`w-16 h-16 rounded-full backdrop-blur-xl bg-black/40 border border-white/20 flex items-center justify-center text-white transition-all duration-500 ease-out shadow-2xl ${isMuted ? 'scale-100 opacity-100' : 'opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100'}`}>
+          {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
+        </div>
+      </div>
+
+      <div className="absolute bottom-6 left-6 backdrop-blur-md bg-black/40 border border-white/10 text-xs font-medium tracking-widest uppercase px-4 py-2 rounded-xl text-white shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-[800ms] pointer-events-none">
+        <span className="text-gradient-gold mr-2 font-bold">{title}</span> | <span className="ml-2">{isMuted ? "Click to Unmute" : "Playing"}</span>
+      </div>
     </div>
   );
 }
@@ -179,17 +220,7 @@ export default function LandingPage() {
               { src: "/Event/Videos/RB public Review Plain.mp4", title: "Public Review" },
               { src: "/Event/Videos/Rahul Ravindran.mp4", title: "Rahul Ravindran" }
             ].map((video, idx) => (
-              <div key={idx} className="relative rounded-xl overflow-hidden shadow-lg border border-primary/20 bg-card/20 backdrop-blur-sm group">
-                <video
-                  src={video.src}
-                  controls
-                  className="w-full aspect-video object-cover"
-                  preload="metadata"
-                />
-                <div className="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-foreground/90 border border-border/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                  {video.title}
-                </div>
-              </div>
+              <VideoCard key={idx} src={video.src} title={video.title} />
             ))}
           </div>
         </div>
