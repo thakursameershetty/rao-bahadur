@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Heart, Star } from "lucide-react";
-import { tweets, celebs, reviews, Celeb, Tweet, Review } from "@/data/mock";
+import { celebs, reviews, Celeb, Review } from "@/data/mock";
 
 function LoveCounter() {
   const [count, setCount] = useState(12438201);
@@ -38,6 +38,13 @@ function LoveCounter() {
   );
 }
 
+const celebTweetImages = [
+  "/Event/celebrity_tweets/Tweets 11.jpg",
+  "/Event/celebrity_tweets/Tweets 23.jpg",
+  "/Event/celebrity_tweets/Tweets 27.jpg",
+  "/Event/celebrity_tweets/Tweets 28.jpg",
+];
+
 function TweetMarquee() {
   return (
     <div className="w-full overflow-hidden whitespace-nowrap py-20 border-y border-border/30 relative">
@@ -53,22 +60,17 @@ function TweetMarquee() {
         animate={{ x: ["0%", "-50%"] }}
         transition={{ repeat: Infinity, ease: "linear", duration: 50 }}
       >
-        <div className="flex space-x-6 px-4">
-          {[...tweets, ...tweets, ...tweets].map((tweet: Tweet, i) => (
-            <Card key={`${tweet.id}-${i}`} className="w-[380px] min-h-[160px] flex-shrink-0 bg-card/20 backdrop-blur-sm border-primary/10 whitespace-normal">
-              <CardContent className="p-6 flex flex-col justify-between h-full space-y-4">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="font-bold text-foreground">{tweet.name}</span>
-                  <span className="text-muted-foreground">{tweet.handle}</span>
-                </div>
-                <p className="text-foreground/90 text-sm leading-relaxed flex-grow">
-                  {tweet.text}
-                </p>
-                <div className="flex items-center text-xs font-semibold text-accent pt-2">
-                  <span className="mr-2">💛</span> {((i * 7431) % 20000 + 1000).toLocaleString()}
-                </div>
-              </CardContent>
-            </Card>
+        <div className="flex space-x-6 px-4 items-center">
+          {[...celebTweetImages, ...celebTweetImages, ...celebTweetImages].map((imgSrc, i) => (
+            <div key={`${i}`} className="relative w-[300px] sm:w-[380px] h-auto flex-shrink-0 rounded-xl overflow-hidden border border-primary/20 shadow-lg bg-card/20 backdrop-blur-sm group">
+              <Image 
+                src={imgSrc} 
+                alt="Celebrity Tweet" 
+                width={380} 
+                height={200} 
+                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500" 
+              />
+            </div>
           ))}
         </div>
       </motion.div>
