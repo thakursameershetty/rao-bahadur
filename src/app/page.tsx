@@ -205,12 +205,13 @@ export default function LandingPage() {
               "/Event/Tweets/Review 1.jpg",
               "/Event/Tweets/Review 2.jpg"
             ].map((imgSrc, idx) => (
-              <div key={idx} className="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-primary/20 bg-card/20 backdrop-blur-sm group">
-                <Image 
-                  src={imgSrc} 
-                  alt={`Trending Review ${idx + 1}`} 
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500" 
+              <div key={idx} className="relative w-full rounded-xl overflow-hidden shadow-lg border border-primary/20 bg-card/20 backdrop-blur-sm group">
+                <Image
+                  src={imgSrc}
+                  alt={`Trending Review ${idx + 1}`}
+                  width={800}
+                  height={800}
+                  className="w-full h-auto group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
             ))}
