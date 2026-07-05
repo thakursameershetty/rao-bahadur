@@ -38,25 +38,25 @@ function LoveCounter() {
   );
 }
 
-const celebTweetImages = [
-  // Celebrity Tweets
-  "/Event/celebrity_tweets/Tweets 11.jpg",
-  "/Event/celebrity_tweets/Tweets 23.jpg",
-  "/Event/celebrity_tweets/Tweets 27.jpg",
-  "/Event/celebrity_tweets/Tweets 28.jpg",
+const SOCIAL_PROOF_IMAGES = [
+  // Celeb tweets
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/celebrity_tweets/Tweets_11.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/celebrity_tweets/Tweets_23.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/celebrity_tweets/Tweets_27.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/celebrity_tweets/Tweets_28.jpg",
 
-  // Fan Tweets
-  "/Event/Tweets/Tweets 2.jpg",
-  "/Event/Tweets/Tweets 9.jpg",
-  "/Event/Tweets/Tweets 10.jpg",
-  "/Event/Tweets/Tweets 19.jpg",
-  "/Event/Tweets/Tweets 24.jpg",
-  "/Event/Tweets/Tweets 26.jpg",
-  "/Event/Tweets/Tweets 30.jpg",
-  "/Event/Tweets/Tweets 31.jpg",
-  "/Event/Tweets/Tweets 32.jpg",
-  "/Event/Tweets/Tweets 33.jpg",
-  "/Event/Tweets/Tweets 34.jpg",
+  // Regular tweets
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_2.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_9.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_10.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_19.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_24.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_26.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_30.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_31.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_32.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_33.jpg",
+  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_34.jpg",
 ];
 
 function TweetMarquee() {
@@ -75,7 +75,7 @@ function TweetMarquee() {
         transition={{ repeat: Infinity, ease: "linear", duration: 50 }}
       >
         <div className="flex space-x-6 px-4 items-center">
-          {[...celebTweetImages, ...celebTweetImages, ...celebTweetImages].map((imgSrc, i) => (
+          {[...SOCIAL_PROOF_IMAGES, ...SOCIAL_PROOF_IMAGES, ...SOCIAL_PROOF_IMAGES].map((imgSrc, i) => (
             <div key={`${i}`} className="relative w-[300px] sm:w-[380px] h-auto flex-shrink-0 rounded-xl overflow-hidden border border-primary/20 shadow-lg bg-card/20 backdrop-blur-sm group">
               <Image
                 src={imgSrc}
@@ -242,9 +242,9 @@ export default function LandingPage() {
                   Enter the Fandom
                 </Button>
               </Link>
-              <Button 
-                variant="outline" 
-                size="lg" 
+              <Button
+                variant="outline"
+                size="lg"
                 className="rounded-full border-primary/30 text-primary hover:bg-primary/10 w-full sm:w-auto"
                 onClick={() => document.getElementById('buzz')?.scrollIntoView({ behavior: 'smooth' })}
               >
@@ -269,8 +269,8 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {[
-              "/Event/Tweets/Review 1.jpg",
-              "/Event/Tweets/Review 2.jpg"
+              "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Review_1.jpg",
+              "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Review_2.jpg"
             ].map((imgSrc, idx) => (
               <div key={idx} className="relative w-full rounded-xl overflow-hidden shadow-lg border border-primary/20 bg-card/20 backdrop-blur-sm group">
                 <Image
