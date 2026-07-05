@@ -5,10 +5,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
-import { Lock, Ticket } from "lucide-react";
+import { Lock, Ticket, Popcorn, Smartphone } from "lucide-react";
 import { celebs, theories, Celeb } from "@/data/mock";
+import { useState } from "react";
 
 export default function BuzzPage() {
+  const [showBookingOptions, setShowBookingOptions] = useState(false);
   const lockedTheories = theories.filter(t => t.locked).slice(0, 3);
   if (lockedTheories.length < 3) {
     lockedTheories.push(...theories.filter(t => !t.locked).slice(0, 3 - lockedTheories.length));
@@ -61,12 +63,34 @@ export default function BuzzPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
-        className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4"
+        className="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4 min-h-[56px]"
       >
-        <Button variant="regal" size="lg" className="w-full sm:w-auto min-w-[200px] flex items-center justify-center gap-2 shadow-glow">
-          <Ticket className="w-5 h-5" />
-          Book Tickets
-        </Button>
+        {!showBookingOptions ? (
+          <Button 
+            variant="regal" 
+            size="lg" 
+            className="w-full sm:w-auto min-w-[200px] flex items-center justify-center gap-2 shadow-glow"
+            onClick={() => setShowBookingOptions(true)}
+          >
+            <Ticket className="w-5 h-5" />
+            Book Tickets
+          </Button>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+          >
+            <Button variant="outline" size="lg" className="w-full sm:w-auto min-w-[180px] bg-red-600/10 hover:bg-red-600/20 text-red-500 border-red-500/50 shadow-[0_0_15px_rgba(220,38,38,0.3)] flex items-center gap-2">
+              <Popcorn className="w-4 h-4" />
+              BookMyShow
+            </Button>
+            <Button variant="outline" size="lg" className="w-full sm:w-auto min-w-[180px] bg-purple-600/10 hover:bg-purple-600/20 text-purple-400 border-purple-500/50 shadow-[0_0_15px_rgba(147,51,234,0.3)] flex items-center gap-2">
+              <Smartphone className="w-4 h-4" />
+              District
+            </Button>
+          </motion.div>
+        )}
       </motion.div>
       </div>
 
