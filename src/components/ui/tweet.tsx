@@ -57,7 +57,19 @@ const formatDate = (dateString: string): string => {
   return `${hour12}:${minutes.toString().padStart(2, "0")} ${ampm} · ${month} ${day}, ${year}`;
 };
 
-const TweetHeader = ({ tweet }: { tweet: EnrichedTweet }) => (
+const TweetHeader = ({
+  tweet,
+  showDelete,
+  onDelete,
+  isSaved,
+  onSave
+}: {
+  tweet: EnrichedTweet;
+  showDelete?: boolean;
+  onDelete?: () => void;
+  isSaved?: boolean;
+  onSave?: (isSaved: boolean) => void;
+}) => (
   <div className="flex items-start justify-between">
     <div className="flex items-center gap-2">
       <div className="size-[38px] shrink-0 rounded-full overflow-hidden border border-border">
@@ -76,22 +88,66 @@ const TweetHeader = ({ tweet }: { tweet: EnrichedTweet }) => (
         </span>
       </div>
     </div>
-    <a href={tweet.url} target="_blank" rel="noopener noreferrer">
-      <Bookmark className="size-5 text-muted-foreground transition-colors hover:text-primary" />
-    </a>
+    <div className="flex items-center gap-1">
+      {onSave ? (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onSave(!isSaved);
+          }}
+          className={cn(
+            "p-1.5 rounded-full transition-colors",
+            isSaved ? "text-primary hover:bg-primary/10" : "text-muted-foreground hover:text-primary hover:bg-primary/10"
+          )}
+          title={isSaved ? "Remove bookmark" : "Bookmark"}
+        >
+          <Bookmark className="size-5" fill={isSaved ? "currentColor" : "none"} />
+        </button>
+      ) : (
+        <a href={tweet.url} target="_blank" rel="noopener noreferrer" className="p-1.5">
+          <Bookmark className="size-5 text-muted-foreground transition-colors hover:text-primary" />
+        </a>
+      )}
+      {showDelete && (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onDelete?.();
+          }}
+          className="text-red-500/80 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-500/10 z-10"
+          title="Delete theory"
+        >
+          <Trash2 className="size-4" />
+        </button>
+      )}
+    </div>
   </div>
 );
 
+const getPreviewText = (text: string) => {
+  if (!text) return "";
+  const sentences = text.match(/.*?[.!?]+(?:\s|$)/g);
+  if (sentences && sentences.length >= 2) {
+    const preview = sentences.slice(0, 2).join('').trim();
+    return text.length > preview.length ? preview + "..." : preview;
+  }
+  return text.length > 150 ? text.substring(0, 150).trim() + "..." : text;
+};
+
 const TweetBody = ({ tweet }: { tweet: any }) => {
-  if (tweet.title && tweet.excerpt) {
+  if (tweet.title) {
     return (
-      <div className="mt-4 flex flex-col gap-3">
-        <h2 className="font-serif text-[15px] text-foreground uppercase tracking-wider leading-snug">
+      <div className="flex flex-col gap-3 mt-2">
+        <h3 className="font-serif text-xl md:text-2xl font-medium leading-tight">
           {tweet.title}
-        </h2>
-        <p className="text-muted-foreground text-[13px] font-light leading-relaxed">
-          {tweet.excerpt}
-        </p>
+        </h3>
+        {tweet.text && (
+          <p className="text-muted-foreground/80 text-[14px] md:text-[15px] leading-relaxed italic">
+            {getPreviewText(tweet.text)}
+          </p>
+        )}
       </div>
     );
   }
@@ -311,6 +367,8 @@ interface TweetContentProps {
   showDelete?: boolean;
   onDelete?: () => void;
   onUpvote?: (isUpvoted: boolean) => boolean | Promise<boolean> | void;
+  isSaved?: boolean;
+  onSave?: (isSaved: boolean) => void;
 }
 
 const TweetContent = ({
@@ -323,6 +381,8 @@ const TweetContent = ({
   showDelete,
   onDelete,
   onUpvote,
+  isSaved,
+  onSave,
 }: TweetContentProps) => {
   return (
     <div
@@ -332,22 +392,9 @@ const TweetContent = ({
       )}
     >
       <div>
-        <TweetHeader tweet={tweet} />
+        <TweetHeader tweet={tweet} showDelete={showDelete} onDelete={onDelete} isSaved={isSaved} onSave={onSave} />
         <TweetBody tweet={tweet} />
         <TweetMedia tweet={tweet} />
-        {showDelete && (
-          <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onDelete?.();
-            }}
-            className="absolute top-4 right-4 text-muted-foreground hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-500/10 z-10"
-            title="Delete theory"
-          >
-            <Trash2 className="size-4" />
-          </button>
-        )}
       </div>
       <TweetFooter
         tweet={tweet}
@@ -371,6 +418,8 @@ interface TweetProps {
   showDelete?: boolean;
   onDelete?: () => void;
   onUpvote?: (isUpvoted: boolean) => boolean | Promise<boolean> | void;
+  isSaved?: boolean;
+  onSave?: (isSaved: boolean) => void;
 }
 
 export const Tweet = ({
@@ -382,7 +431,9 @@ export const Tweet = ({
   initialUpvoted = false,
   showDelete = false,
   onDelete,
-  onUpvote
+  onUpvote,
+  isSaved,
+  onSave
 }: TweetProps) => {
   const enrichedTweet = enrichTweet(tweetData as any);
 
@@ -397,6 +448,8 @@ export const Tweet = ({
       showDelete={showDelete}
       onDelete={onDelete}
       onUpvote={onUpvote}
+      isSaved={isSaved}
+      onSave={onSave}
     />
   );
 };
@@ -416,7 +469,7 @@ export const TweetSkeleton = () => {
           </div>
           <div className="size-5 bg-border/40 rounded" />
         </div>
-        
+
         {/* Body Skeleton */}
         <div className="mt-5 flex flex-col gap-3">
           <div className="h-5 w-3/4 bg-border/40 rounded" />
@@ -427,7 +480,7 @@ export const TweetSkeleton = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Footer Skeleton */}
       <div className="mt-6">
         <div className="flex items-center justify-between">

@@ -32,7 +32,7 @@ function LoveCounter() {
         </div>
       </div>
       <div className="text-[10px] md:text-sm text-foreground/80 uppercase tracking-widest md:pl-11 font-medium text-center md:text-left">
-        Hearts beating for Rao Bahadur
+        People who entered the world of Rao Bahadur
       </div>
     </div>
   );
@@ -66,7 +66,7 @@ function TweetMarquee() {
 
       <div className="relative z-10 flex flex-col items-center mb-12 whitespace-normal px-4">
         <h3 className="text-accent tracking-[0.3em] text-xs md:text-sm uppercase mb-4 font-semibold text-center">Fan Buzz</h3>
-        <h2 className="font-serif text-3xl md:text-5xl text-foreground text-center">The Internet Cannot Sit Down</h2>
+        <h2 className="font-serif text-3xl md:text-5xl text-foreground text-center">One Film. Countless Reactions.</h2>
       </div>
 
       <motion.div
@@ -93,10 +93,20 @@ function TweetMarquee() {
 }
 
 const CELEBRITY_VIDEOS = [
+  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Sukumar_compressed.mp4", title: "Sukumar" },
+  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Naga_Chaitanya_compressed.mp4", title: "Naga Chaitanya" },
   { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Critics.mp4", title: "Critics" },
-  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Hollywood_Reporter.mp4", title: "Hollywood Reporter" },
+  {
+    src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Hollywood_Reporter.mp4",
+    title: "Hollywood Reporter",
+    poster: "https://res.cloudinary.com/uohqyl93/video/upload/so_5.0/raobahadur/event/videos/Hollywood_Reporter.jpg"
+  },
   { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/RB_public_Review_Plain.mp4", title: "Public Review" },
-  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Rahul_Ravindran.mp4", title: "Rahul Ravindran" }
+  {
+    src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Rahul_Ravindran.mp4",
+    title: "Rahul Ravindran",
+    poster: "https://res.cloudinary.com/uohqyl93/video/upload/so_7.06/raobahadur/event/videos/Rahul_Ravindran.jpg"
+  }
 ];
 
 function CelebrityReactions() {
@@ -113,6 +123,7 @@ function CelebrityReactions() {
           <VideoCard
             key={idx}
             src={video.src}
+            poster={video.poster}
             title={video.title}
             isActive={activeVideo === idx}
             onPlayClick={() => setActiveVideo(activeVideo === idx ? -1 : idx)}
@@ -124,7 +135,7 @@ function CelebrityReactions() {
   );
 }
 
-function VideoCard({ src, title, isActive, onPlayClick, onEnded }: { src: string, title: string, isActive: boolean, onPlayClick: () => void, onEnded: () => void }) {
+function VideoCard({ src, poster, title, isActive, onPlayClick, onEnded }: { src: string, poster?: string, title: string, isActive: boolean, onPlayClick: () => void, onEnded: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -171,6 +182,7 @@ function VideoCard({ src, title, isActive, onPlayClick, onEnded }: { src: string
       <video
         ref={videoRef}
         src={src}
+        poster={poster || src.replace('.mp4', '.jpg')}
         muted={isMuted}
         playsInline
         preload="metadata"
@@ -251,7 +263,7 @@ export default function LandingPage() {
                 I Root for<br />Rao Bahadur
               </h1>
               <p className="font-sans text-xs sm:text-sm md:text-base lg:text-lg text-foreground/90 max-w-2xl drop-shadow-md mx-auto md:mx-0 px-2 md:px-0">
-                The turban tightens. The peacocks watch. A film that has set the screen on fire — and its people, on their feet.
+                A place for everyone who loved Rao Bahadur.
               </p>
             </div>
           </motion.div>
@@ -273,7 +285,7 @@ export default function LandingPage() {
             >
               <Link href="/entry" passHref className="w-full sm:w-auto">
                 <Button variant="regal" size="lg" className="rounded-full shadow-glow w-full sm:w-auto">
-                  Enter the Fandom
+                  Root for Rao Bahadur
                 </Button>
               </Link>
               <Button
@@ -340,12 +352,12 @@ export default function LandingPage() {
       </div>
 
       {/* Footer */}
-      <footer className="w-full py-8 text-center text-[10px] sm:text-xs tracking-[0.2em] md:tracking-[0.4em] uppercase text-muted-foreground/60 border-t border-border/10 bg-background/50 flex flex-col md:block gap-3 px-4">
+      <footer className="relative z-50 w-full py-8 text-center text-[10px] sm:text-xs tracking-[0.2em] md:tracking-[0.4em] uppercase text-muted-foreground/60 border-t border-border/10 bg-background/50 flex flex-col md:block gap-3 px-4">
         <span>A Fan Tribute</span>
         <span className="hidden md:inline"> &middot; </span>
         <span>Rao Bahadur</span>
         <span className="hidden md:inline"> &middot; </span>
-        <span>Long Live the King</span>
+        <span>Join the Conversation</span>
       </footer>
     </div >
   );

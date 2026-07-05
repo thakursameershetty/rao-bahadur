@@ -17,7 +17,7 @@ const cinzel = Cinzel({
 
 export const metadata: Metadata = {
   title: "I Root for Rao Bahadur",
-  description: "Enter the Fandom.",
+  description: "Root for Rao Bahadur.",
 };
 
 export default function RootLayout({

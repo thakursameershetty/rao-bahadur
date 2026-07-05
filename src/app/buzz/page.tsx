@@ -33,7 +33,7 @@ export default function BuzzPage() {
             transition={{ delay: 0.2 }}
             className="text-lg text-muted-foreground max-w-2xl mx-auto"
           >
-            The world is talking about the twist. Don't let it be spoiled for you.
+            Discover Rao Bahadur the way it was meant to be experienced.
           </motion.p>
 
         </div>
@@ -126,8 +126,7 @@ export default function BuzzPage() {
                 <CardDescription>By {theory.author}</CardDescription>
               </CardHeader>
               <CardContent className="blur-md opacity-30 select-none pb-6">
-                <p className="text-sm">{theory.excerpt}</p>
-                <p className="text-sm mt-2">{theory.body}</p>
+                <p className="text-sm line-clamp-3">{theory.body}</p>
               </CardContent>
 
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/40 backdrop-blur-[2px] transition-all group-hover:bg-background/60">

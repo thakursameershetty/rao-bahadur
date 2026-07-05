@@ -10,7 +10,6 @@ datasource db {
 model Theory {
   id        String   @id @default(uuid())
   title     String
-  excerpt   String
   content   String   @db.Text
   author    String
   tag       String
@@ -27,6 +26,10 @@ model Comment {
   text      String   @db.Text
   upvotes   Int      @default(0)
   createdAt DateTime @default(now())
+
+  parentId  String?
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
 
   theory    Theory   @relation(fields: [theoryId], references: [id], onDelete: Cascade)
 }

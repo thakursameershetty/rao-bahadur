@@ -15,7 +15,7 @@ export default function EntryPage() {
           Have you watched<br />Rao Bahadur?
         </h1>
         <p className="text-base md:text-xl text-muted-foreground max-w-xl mx-auto">
-          Your answer decides what you see next. Choose truthfully — the peacocks are watching.
+          Choose your experience.
         </p>
       </motion.div>
 
@@ -26,9 +26,9 @@ export default function EntryPage() {
           transition={{ delay: 0.2 }}
         >
           <ServiceCard
-            eyebrow="Enter the fan universe"
             title="Yes, I've watched"
-            description="Theories. Hidden details. Discussions with the faithful."
+            description="Access fan theories, discussions and hidden details."
+            buttonText="Continue"
             href="/fan"
             imgSrc="https://www.thiings.co/_next/image?url=https%3A%2F%2Flftz25oez4aqbxpq.public.blob.vercel-storage.com%2Fimage-2nDYzxsvMOLAC1EjdOOcEAM7VvkJcy.png&w=1000&q=75"
             imgAlt="Fan universe illustration"
@@ -43,9 +43,9 @@ export default function EntryPage() {
           transition={{ delay: 0.4 }}
         >
           <ServiceCard
-            eyebrow="Feel the fever"
             title="Not yet"
-            description="Reactions, celebrity voices, and locked mysteries waiting for you."
+            description="Discover why everyone is talking about Rao Bahadur."
+            buttonText="Explore"
             href="/buzz"
             imgSrc="https://www.thiings.co/_next/image?url=https%3A%2F%2Flftz25oez4aqbxpq.public.blob.vercel-storage.com%2Fimage-5IIrpmpMSSq6StmgnQJhWfikhmJAcp.png&w=1000&q=75"
             imgAlt="Hype illustration"

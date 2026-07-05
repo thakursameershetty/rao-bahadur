@@ -45,6 +45,10 @@ export interface ServiceCardProps
    */
   href: string;
   /**
+   * Custom text for the button/link (defaults to "ENTER").
+   */
+  buttonText?: string;
+  /**
    * The source URL for the decorative image.
    */
   imgSrc: string;
@@ -55,7 +59,7 @@ export interface ServiceCardProps
 }
 
 const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
-  ({ className, variant, eyebrow, title, description, href, imgSrc, imgAlt, ...props }, ref) => {
+  ({ className, variant, eyebrow, title, description, href, buttonText = "ENTER", imgSrc, imgAlt, ...props }, ref) => {
 
     // Animation variants for Framer Motion
     const cardAnimation: Variants = {
@@ -98,7 +102,7 @@ const ServiceCard = React.forwardRef<HTMLDivElement, ServiceCardProps>(
             aria-label={`Learn more about ${title}`}
             className="mt-auto flex items-center text-sm font-semibold text-primary group-hover:underline uppercase tracking-wider before:absolute before:inset-0 before:z-20"
           >
-            ENTER
+            {buttonText}
             <motion.div variants={arrowAnimation}>
               <ArrowRight className="ml-2 h-4 w-4" />
             </motion.div>

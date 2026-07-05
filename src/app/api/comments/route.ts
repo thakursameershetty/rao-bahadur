@@ -21,6 +21,7 @@ export async function GET(request: Request) {
       author: c.author,
       text: c.text,
       upvotes: c.upvotes,
+      parentId: c.parentId,
       createdAt: c.createdAt.toISOString()
     }));
 
@@ -34,7 +35,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { theoryId, author, text } = body;
+    const { theoryId, author, text, parentId } = body;
 
     if (!theoryId || !author || !text) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -44,7 +45,8 @@ export async function POST(request: Request) {
       data: {
         theoryId,
         author,
-        text
+        text,
+        parentId: parentId || null
       }
     });
 

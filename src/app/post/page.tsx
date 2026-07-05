@@ -14,7 +14,6 @@ export default function PostTheoryPage() {
   const { username } = useSession();
 
   const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [tag, setTag] = useState("New");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,7 +22,7 @@ export default function PostTheoryPage() {
 
   const handleSubmit = async (e?: React.FormEvent, providedUsername?: string) => {
     if (e) e.preventDefault();
-    if (!title || !excerpt || !content) return;
+    if (!title || !content) return;
 
     const activeUsername = providedUsername || username;
     if (!activeUsername) {
@@ -39,7 +38,6 @@ export default function PostTheoryPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          excerpt,
           content,
           author: activeUsername,
           tag
@@ -57,7 +55,7 @@ export default function PostTheoryPage() {
     }
   };
 
-  const isFormValid = title.trim() !== "" && excerpt.trim() !== "" && content.trim() !== "";
+  const isFormValid = title.trim() !== "" && content.trim() !== "";
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col pb-safe relative">
@@ -128,16 +126,10 @@ export default function PostTheoryPage() {
                   placeholder="Title: What's your theory about?"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full bg-transparent text-xl font-bold text-foreground placeholder:text-muted-foreground/50 outline-none border-b border-border/10 pb-3 focus:border-[#f5c66d]/50 transition-colors"
+                  className="w-full bg-white/5 text-xl font-bold text-foreground placeholder:text-muted-foreground/50 outline-none border border-white/10 rounded-xl p-4 focus:border-[#f5c66d]/50 transition-colors"
                 />
 
-                <input
-                  type="text"
-                  placeholder="TL;DR: Summarize it in a sentence..."
-                  value={excerpt}
-                  onChange={(e) => setExcerpt(e.target.value)}
-                  className="w-full bg-transparent text-lg text-foreground placeholder:text-muted-foreground/50 outline-none border-b border-border/10 pb-3 focus:border-[#f5c66d]/50 transition-colors"
-                />
+
 
                 {/* Tags Selector */}
                 <div className="flex items-center gap-4 text-[#f5c66d] text-sm font-medium py-2">
@@ -163,7 +155,7 @@ export default function PostTheoryPage() {
                   placeholder="Dive deep into the details..."
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="w-full bg-transparent text-lg text-foreground placeholder:text-muted-foreground/50 outline-none resize-none min-h-[400px] leading-relaxed pt-2"
+                  className="w-full bg-white/5 text-lg text-foreground placeholder:text-muted-foreground/50 outline-none border border-white/10 rounded-xl p-4 resize-none min-h-[400px] leading-relaxed focus:border-[#f5c66d]/50 transition-colors"
                 />
               </div>
             </div>

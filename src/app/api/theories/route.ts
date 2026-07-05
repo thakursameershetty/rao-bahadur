@@ -17,7 +17,6 @@ export async function GET(request: Request) {
       return NextResponse.json({
         id: theory.id,
         title: theory.title,
-        excerpt: theory.excerpt,
         content: theory.content,
         author: theory.author,
         tag: theory.tag,
@@ -40,7 +39,6 @@ export async function GET(request: Request) {
     const formatted = theories.map((t: any) => ({
       id: t.id,
       title: t.title,
-      excerpt: t.excerpt,
       content: t.content,
       author: t.author,
       tag: t.tag,
@@ -59,14 +57,13 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, excerpt, content, author, tag } = body;
+    const { title, content, author, tag } = body;
 
     if (!title || !author) return NextResponse.json({ error: "Missing fields" }, { status: 400 });
 
     const newTheory = await prisma.theory.create({
       data: {
         title,
-        excerpt: excerpt || title.substring(0, 50) + "...",
         content,
         author,
         tag: tag || "Hidden Detail"

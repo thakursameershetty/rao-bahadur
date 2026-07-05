@@ -7,7 +7,7 @@ import useSWR from "swr";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Textarea } from "@/components/ui/Textarea";
-import { Send, Share, Check, MessageCircle, MessageSquare } from "lucide-react";
+import { Send, Share, Check, MessageCircle, MessageSquare, X } from "lucide-react";
 import { UpvoteIconButton } from "@/components/ui/upvote-icon-button";
 import { Facehash } from "facehash";
 import { useSession } from "@/hooks/useSession";
@@ -29,6 +29,8 @@ export default function TheoryPage() {
 
   const [commentText, setCommentText] = useState("");
   const [isCopied, setIsCopied] = useState(false);
+  const [replyingTo, setReplyingTo] = useState<{ id: string, name: string } | null>(null);
+  const [expandedThreads, setExpandedThreads] = useState<Record<string, boolean>>({});
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -44,7 +46,7 @@ export default function TheoryPage() {
       try {
         await navigator.share({
           title: theory?.title || "Theory",
-          text: theory?.excerpt || "Check out this theory!",
+          text: theory?.content || "Check out this theory!",
           url: window.location.href,
         });
       } catch (err) {
@@ -59,28 +61,42 @@ export default function TheoryPage() {
 
   if (!theory) {
     return (
-      <div className="min-h-screen pb-40 container mx-auto px-4 max-w-3xl pt-28 space-y-8 animate-pulse">
-        <div className="space-y-6">
+      <div className="min-h-screen pb-40 container mx-auto px-4 max-w-3xl pt-28 space-y-8">
+        <div className="space-y-6 animate-pulse">
           <div className="space-y-4">
-            <div className="w-24 h-6 bg-card/10 rounded-sm" />
-            <div className="w-3/4 h-12 md:h-14 bg-card/10 rounded-md mt-4" />
-            <div className="flex items-center gap-4 mt-8">
-              <div className="w-12 h-12 rounded-full bg-card/10" />
-              <div className="space-y-2">
-                <div className="w-32 h-4 bg-card/10 rounded" />
-                <div className="w-24 h-3 bg-card/10 rounded" />
-              </div>
+            {/* Tag */}
+            <div className="w-24 h-6 bg-border/40 rounded-sm" />
+            {/* Title */}
+            <div className="w-3/4 h-12 md:h-14 bg-border/40 rounded-md mt-4" />
+            {/* Author */}
+            <div className="flex items-center gap-2 mt-8">
+              <div className="w-8 h-4 bg-border/40 rounded" />
+              <div className="w-24 h-4 bg-border/40 rounded" />
             </div>
           </div>
+
           <div className="h-px w-full bg-border/30 my-8" />
-          <div className="space-y-4 pt-4">
-            <div className="w-full h-4 bg-card/10 rounded" />
-            <div className="w-full h-4 bg-card/10 rounded" />
-            <div className="w-11/12 h-4 bg-card/10 rounded" />
-            <div className="w-full h-4 bg-card/10 rounded" />
-            <div className="w-4/5 h-4 bg-card/10 rounded" />
-            <div className="w-full h-4 bg-card/10 rounded" />
-            <div className="w-3/4 h-4 bg-card/10 rounded" />
+
+          <div className="space-y-6">
+            {/* Actions */}
+            <div className="flex items-center justify-between mt-6 pb-2 border-b border-border/20 mb-6">
+              <div className="flex items-center gap-2">
+                <div className="w-16 h-10 bg-border/40 rounded-full" />
+                <div className="w-16 h-10 bg-border/40 rounded-full" />
+              </div>
+              <div className="w-10 h-10 bg-border/40 rounded-full" />
+            </div>
+
+            {/* Content body */}
+            <div className="space-y-3 pt-4">
+              <div className="w-full h-4 bg-border/40 rounded" />
+              <div className="w-full h-4 bg-border/40 rounded" />
+              <div className="w-11/12 h-4 bg-border/40 rounded" />
+              <div className="w-full h-4 bg-border/40 rounded" />
+              <div className="w-4/5 h-4 bg-border/40 rounded" />
+              <div className="w-full h-4 bg-border/40 rounded" />
+              <div className="w-3/4 h-4 bg-border/40 rounded" />
+            </div>
           </div>
         </div>
       </div>
@@ -97,9 +113,13 @@ export default function TheoryPage() {
     await fetch("/api/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ theoryId: id, author: username, text: commentText })
+      body: JSON.stringify({ theoryId: id, author: username, text: commentText, parentId: replyingTo?.id })
     });
 
+    if (replyingTo) {
+      setExpandedThreads(prev => ({ ...prev, [replyingTo.id]: true }));
+    }
+    setReplyingTo(null);
     setCommentText("");
     mutateComments();
     mutateTheory();
@@ -161,10 +181,6 @@ export default function TheoryPage() {
           </div>
 
           <div className="prose prose-invert max-w-none">
-            <p className="text-xl text-foreground/90 italic border-l-2 border-primary pl-4 py-1">
-              {theory.excerpt}
-            </p>
-
             {/* Upvote and Share - Below TL;DR */}
             <div className="flex items-center justify-between mt-6 pb-2 border-b border-border/20 mb-6">
               <div className="flex items-center gap-2">
@@ -210,27 +226,86 @@ export default function TheoryPage() {
             {theoryComments.length === 0 ? (
               <p className="text-muted-foreground italic text-center py-8">Be the first to share your thoughts.</p>
             ) : (
-              theoryComments.map((comment: any) => (
-                <div key={comment.id} className="p-4 rounded-lg bg-card/20 border border-border/30">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="shrink-0 w-8 h-8 rounded-full overflow-hidden border border-border/30 shadow-inner bg-background">
-                      <Facehash name={comment.author} size={32} />
+              theoryComments.filter((c: any) => !c.parentId).map((comment: any) => {
+                const replies = theoryComments.filter((c: any) => c.parentId === comment.id);
+                const isExpanded = expandedThreads[comment.id];
+                return (
+                  <div key={comment.id} className="space-y-3">
+                    <div className="p-4 rounded-lg bg-card/20 border border-border/30">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="shrink-0 w-8 h-8 rounded-full overflow-hidden border border-border/30 shadow-inner bg-background">
+                          <Facehash name={comment.author} size={32} />
+                        </div>
+                        <span className="font-bold text-primary text-sm">{comment.author}</span>
+                      </div>
+                      <p className="text-sm text-foreground/90 pl-11 mb-2">{comment.text}</p>
+                      <div className="flex items-center gap-4 pl-11 mt-1">
+                        <UpvoteIconButton
+                          count={comment.upvotes}
+                          onUpvote={(isUpvoted) => handleCommentUpvote(comment.id, isUpvoted)}
+                        />
+                        <button
+                          onClick={() => {
+                            setReplyingTo({ id: comment.id, name: comment.author });
+                            document.getElementById('comment-input')?.focus();
+                          }}
+                          className="flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary group"
+                        >
+                          <MessageSquare className="w-4 h-4 group-hover:text-[#f5c66d] transition-colors opacity-70" />
+                          <span className="text-xs font-medium group-hover:text-[#f5c66d] transition-colors">Reply</span>
+                        </button>
+                      </div>
                     </div>
-                    <span className="font-bold text-primary text-sm">{comment.author}</span>
+
+                    {replies.length > 0 && (
+                      <div className="pl-12">
+                        <button
+                          onClick={() => setExpandedThreads(prev => ({ ...prev, [comment.id]: !prev[comment.id] }))}
+                          className="text-xs font-bold text-muted-foreground hover:text-foreground flex items-center gap-3"
+                        >
+                          <div className="w-8 h-px bg-border/50" />
+                          {isExpanded ? "Hide replies" : `View ${replies.length} repl${replies.length === 1 ? 'y' : 'ies'}`}
+                        </button>
+                      </div>
+                    )}
+
+                    {isExpanded && replies.length > 0 && (
+                      <div className="pl-8 md:pl-12 space-y-3 relative mt-2">
+                        <div className="absolute left-4 top-0 bottom-4 w-px bg-border/30" />
+
+                        {replies.map((reply: any) => (
+                          <div key={reply.id} className="p-3 rounded-lg bg-card/10 border border-border/20 relative z-10 ml-4">
+                            <div className="flex items-center gap-2 mb-1">
+                              <div className="shrink-0 w-6 h-6 rounded-full overflow-hidden border border-border/30 shadow-inner bg-background">
+                                <Facehash name={reply.author} size={24} />
+                              </div>
+                              <span className="font-bold text-primary text-xs">{reply.author}</span>
+                            </div>
+                            <p className="text-[13px] text-foreground/80 pl-8 mb-1.5">{reply.text}</p>
+                            <div className="flex items-center gap-3 pl-8">
+                              <UpvoteIconButton
+                                count={reply.upvotes}
+                                onUpvote={(isUpvoted) => handleCommentUpvote(reply.id, isUpvoted)}
+                              />
+                              <button
+                                onClick={() => {
+                                  setReplyingTo({ id: comment.id, name: reply.author });
+                                  setCommentText(`@${reply.author} `);
+                                  document.getElementById('comment-input')?.focus();
+                                }}
+                                className="flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary group"
+                              >
+                                <MessageSquare className="w-3.5 h-3.5 group-hover:text-[#f5c66d] transition-colors opacity-70" />
+                                <span className="text-[11px] font-medium group-hover:text-[#f5c66d] transition-colors">Reply</span>
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <p className="text-sm text-foreground/90 pl-11 mb-2">{comment.text}</p>
-                  <div className="flex items-center gap-4 pl-11 mt-1">
-                    <UpvoteIconButton
-                      count={comment.upvotes}
-                      onUpvote={(isUpvoted) => handleCommentUpvote(comment.id, isUpvoted)}
-                    />
-                    <button className="flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary group">
-                      <MessageSquare className="w-4 h-4 group-hover:text-[#f5c66d] transition-colors opacity-70" />
-                      <span className="text-xs font-medium group-hover:text-[#f5c66d] transition-colors">Reply</span>
-                    </button>
-                  </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
@@ -238,8 +313,23 @@ export default function TheoryPage() {
 
       {/* Floating CTA Pill */}
       <div className="fixed bottom-8 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
-        <div className="pointer-events-auto w-full max-w-md">
-          <div className="flex items-center gap-3 bg-card/70 backdrop-blur-xl border border-border/50 shadow-2xl rounded-full p-2 w-full transition-colors focus-within:bg-card/90">
+        <div className="pointer-events-auto w-full max-w-md relative">
+
+          {replyingTo && (
+            <div className="absolute -top-10 left-4 right-4 bg-card/90 border border-border/50 rounded-t-xl px-4 py-2 flex items-center justify-between backdrop-blur-xl shadow-lg border-b-0 pb-4">
+              <span className="text-xs text-muted-foreground font-medium flex items-center gap-1">
+                Replying to <strong className="text-primary">@{replyingTo.name}</strong>
+              </span>
+              <button
+                onClick={() => { setReplyingTo(null); setCommentText(""); }}
+                className="text-muted-foreground hover:text-foreground transition-colors p-1"
+              >
+                <X className="size-3" />
+              </button>
+            </div>
+          )}
+
+          <div className="flex items-center gap-3 bg-card/95 backdrop-blur-xl border border-border/50 shadow-2xl rounded-full p-2 w-full transition-colors focus-within:bg-card relative z-10">
             <div className="shrink-0 w-12 h-12 rounded-full overflow-hidden border border-border/30 shadow-inner bg-background flex items-center justify-center">
               {username ? (
                 <Facehash name={username} size={48} enableBlink={true} />

@@ -5,7 +5,6 @@ export type Theory = {
   id: string;
   title: string;
   author: string;
-  excerpt: string;
   body: string;
   upvotes: number;
   comments: number;
@@ -44,50 +43,44 @@ export const reviews: Review[] = [
 export const theories: Theory[] = [
   {
     id: "th1",
-    title: "The peacock feathers count the fallen",
+    title: "The Peacock Feather Count",
     author: "kabir_watches",
-    excerpt: "Every time an ally dies, a feather appears behind Rao. Count them in the final frame.",
-    body: "Look closely at the throne backdrop. In act one, there are exactly three feathers. By the interval, seven. In the final tableau — eighteen. Each corresponds to a named death, in order. The costume department has been receipts-level meticulous.",
+    body: "If you pay close attention during the climactic battle, every time one of Rao's allies falls, a single peacock feather subtly appears in the background... seven. In the final tableau — eighteen. Each corresponds to a named death, in order. The costume department has been receipts-level meticulous.",
     upvotes: 4821, comments: 214, tag: "Hidden Detail",
   },
   {
     id: "th2",
-    title: "The lullaby is a countdown, not a memory",
+    title: "The Broken Lullaby",
     author: "mira_theories",
-    excerpt: "The mother's lullaby plays exactly 5 times. Each time, a promise is broken.",
-    body: "The lullaby motif — those four descending notes — appears at 00:14, 00:47, 01:22, 01:58, and 02:41. Each cue is followed within 90 seconds by Rao breaking a vow. It's not nostalgia. It's a metronome for his moral collapse.",
+    body: "Notice the background score during the flashback sequence. The mother's lullaby plays exactly 5 times... 00:47, 01:22, 01:58, and 02:41. Each cue is followed within 90 seconds by Rao breaking a vow. It's not nostalgia. It's a metronome for his moral collapse.",
     upvotes: 3902, comments: 187, tag: "Trending",
   },
   {
     id: "th3",
-    title: "Rao Bahadur is already dead in the opening shot",
+    title: "No Reflection",
     author: "ghost_frame",
-    excerpt: "The mirror scene. Look at what isn't reflected.",
-    body: "In the opening, Rao stands before an ornate mirror. His reflection is off by half a beat. Ghost lore, or a director winking that the entire film is a memory told from the other side? The final scene confirms it — or does it?",
+    body: "During the intense mirror monologue in Act 2, pause at 1:14:22. Rao's reflection is missing...off by half a beat. Ghost lore, or a director winking that the entire film is a memory told from the other side? The final scene confirms it — or does it?",
     upvotes: 6210, comments: 402, tag: "Trending",
   },
   {
     id: "th4",
-    title: "The color grade shifts with his conscience",
+    title: "Color Grading Tells the Story",
     author: "colorist_anon",
-    excerpt: "Warm gold in the first half. Cold teal as guilt takes over.",
-    body: "Frame-by-frame the grade drifts from a warm ochre wash to a cold peacock teal. The tipping point is the courtyard scene — the exact moment he lies to his brother. From there, no scene returns to gold.",
+    body: "Has anyone else noticed the color shift? The first half of the movie is bathed in warm gold... peacock teal. The tipping point is the courtyard scene — the exact moment he lies to his brother. From there, no scene returns to gold.",
     upvotes: 2984, comments: 96, tag: "Hidden Detail",
   },
   {
     id: "th5",
-    title: "The elder brother's ring is the real villain",
+    title: "The Emerald Ring",
     author: "narrative_nerd",
-    excerpt: "Track the ring across every scene. It's never where you think it is.",
-    body: "The signet ring changes hands five times without a single line of dialogue about it. Whoever wears it makes the film's worst decision within the next scene. It's a cursed object hiding in plain sight.",
+    body: "The emerald ring isn't just a prop. It's passed between characters subtly...e line of dialogue about it. Whoever wears it makes the film's worst decision within the next scene. It's a cursed object hiding in plain sight.",
     upvotes: 1874, comments: 63, tag: "New",
   },
   {
     id: "th6",
-    title: "The rain never touches him",
+    title: "He Never Gets Wet",
     author: "weatherman",
-    excerpt: "Watch every downpour. He is always, always dry.",
-    body: "Across six rain sequences, extras are drenched. Rao Bahadur is untouched. The one time a drop lands on his cheek is the frame before his final choice.",
+    body: "It rains in almost every major scene, but look closely at Rao. He never gets wet...ouched. The one time a drop lands on his cheek is the frame before his final choice.",
     upvotes: 2401, comments: 118, tag: "Hidden Detail",
   },
 ];

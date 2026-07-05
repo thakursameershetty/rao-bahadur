@@ -6,18 +6,26 @@ export function useSession() {
   const [username, setUsername] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [upvotedIds, setUpvotedIds] = useState<string[]>([]);
+  const [savedIds, setSavedIds] = useState<string[]>([]);
 
   useEffect(() => {
     const stored = localStorage.getItem("raobahadur_username");
     if (stored) setUsername(stored);
-    
+
     const storedUpvotes = localStorage.getItem("raobahadur_upvotes");
     if (storedUpvotes) {
       try {
         setUpvotedIds(JSON.parse(storedUpvotes));
-      } catch (e) {}
+      } catch (e) { }
     }
-    
+
+    const storedSaved = localStorage.getItem("raobahadur_saved");
+    if (storedSaved) {
+      try {
+        setSavedIds(JSON.parse(storedSaved));
+      } catch (e) { }
+    }
+
     setIsReady(true);
   }, []);
 
@@ -33,7 +41,7 @@ export function useSession() {
 
   const toggleUpvote = (id: string, isUpvoted: boolean) => {
     setUpvotedIds(prev => {
-      const next = isUpvoted 
+      const next = isUpvoted
         ? [...new Set([...prev, id])]
         : prev.filter(i => i !== id);
       localStorage.setItem("raobahadur_upvotes", JSON.stringify(next));
@@ -41,7 +49,18 @@ export function useSession() {
     });
   };
 
-  const hasUpvoted = (id: string) => upvotedIds.includes(id);
+  const toggleSave = (id: string, isSaved: boolean) => {
+    setSavedIds(prev => {
+      const next = isSaved
+        ? [...new Set([...prev, id])]
+        : prev.filter(i => i !== id);
+      localStorage.setItem("raobahadur_saved", JSON.stringify(next));
+      return next;
+    });
+  };
 
-  return { username, isReady, login, logout, hasUpvoted, toggleUpvote };
+  const hasUpvoted = (id: string) => upvotedIds.includes(id);
+  const hasSaved = (id: string) => savedIds.includes(id);
+
+  return { username, isReady, login, logout, hasUpvoted, toggleUpvote, hasSaved, toggleSave };
 }

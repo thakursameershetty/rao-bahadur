@@ -25,7 +25,7 @@ const getTabIcon = (filterName: string) => {
 
 export default function FanPage() {
   const { data: theories, error, mutate } = useSWR("/api/theories?sort=trending", fetcher);
-  const { isReady, username, hasUpvoted, toggleUpvote } = useSession();
+  const { isReady, username, hasUpvoted, toggleUpvote, hasSaved, toggleSave } = useSession();
 
   const [filter, setFilter] = useState("All");
   const [isScrolled, setIsScrolled] = useState(false);
@@ -75,10 +75,10 @@ export default function FanPage() {
           <div className="flex flex-col items-center justify-center text-center space-y-4">
             <span className="text-accent text-[10px] md:text-xs font-bold uppercase tracking-[0.3em]">The Fan Universe</span>
             <h1 className="font-serif text-5xl md:text-7xl text-gradient-gold uppercase tracking-wider">
-              Long Live the King
+              Join the Conversation
             </h1>
             <p className="text-muted-foreground max-w-md mx-auto pt-2">
-              Read what the faithful found. Upvote your favorites. Reply. Then post your own.
+              Read theories, join discussions and share your own.
             </p>
           </div>
         </div>
@@ -163,14 +163,13 @@ export default function FanPage() {
                   <Tweet
                     tweetData={{
                       id_str: theory.id,
-                      text: theory.excerpt,
+                      text: theory.content,
                       title: theory.title,
-                      excerpt: theory.excerpt,
                       created_at: theory.createdAt,
                       favorite_count: theory.upvotes,
                       conversation_count: theory.comments,
                       lang: "en",
-                      display_text_range: [0, theory.excerpt.length],
+                      display_text_range: [0, theory.content.length],
                       tag: theory.tag,
                       entities: { urls: [], hashtags: [], symbols: [], user_mentions: [] },
                       edit_control: { edit_tweet_ids: [theory.id], editable_until_msecs: "0", is_edit_eligible: false, edits_remaining: "0" },
@@ -201,6 +200,8 @@ export default function FanPage() {
                       mutate();
                       return true;
                     }}
+                    isSaved={hasSaved(theory.id)}
+                    onSave={(isSaved) => toggleSave(theory.id, isSaved)}
                   />
                 </div>
               </motion.div>
