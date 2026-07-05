@@ -13,16 +13,16 @@ export default function BuzzPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col py-12 px-4 container mx-auto space-y-24">
+    <div className="min-h-screen flex flex-col pt-28 md:pt-40 pb-12 px-4 container mx-auto space-y-24">
       <div className="text-center space-y-6">
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="font-serif text-4xl md:text-6xl text-foreground uppercase tracking-widest"
         >
           You are missing out
         </motion.h1>
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -30,7 +30,7 @@ export default function BuzzPage() {
         >
           The world is talking about the twist. Don't let it be spoiled for you.
         </motion.p>
-        
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -52,13 +52,13 @@ export default function BuzzPage() {
         className="w-full max-w-4xl mx-auto rounded-[2rem] overflow-hidden border border-primary/20 shadow-[0_20px_60px_rgba(0,0,0,0.3)] bg-card/10 backdrop-blur-sm p-2"
       >
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
-          <iframe 
+          <iframe
             className="absolute inset-0 w-full h-full"
-            src="https://www.youtube.com/embed/3qSIgQxpoqM?si=IhA4GTk-e-r7hnUV" 
-            title="YouTube video player" 
-            frameBorder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerPolicy="strict-origin-when-cross-origin" 
+            src="https://www.youtube.com/embed/3qSIgQxpoqM?si=IhA4GTk-e-r7hnUV"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           ></iframe>
         </div>
@@ -104,7 +104,7 @@ export default function BuzzPage() {
                 <p className="text-sm">{theory.excerpt}</p>
                 <p className="text-sm mt-2">{theory.body}</p>
               </CardContent>
-              
+
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/40 backdrop-blur-[2px] transition-all group-hover:bg-background/60">
                 <div className="p-4 rounded-full bg-background/80 mb-4 shadow-lg">
                   <Lock className="w-8 h-8 text-primary" />
