@@ -33,3 +33,8 @@ model Comment {
 
   theory    Theory   @relation(fields: [theoryId], references: [id], onDelete: Cascade)
 }
+
+model Character {
+  id      String @id
+  likes   Int    @default(0)
+}

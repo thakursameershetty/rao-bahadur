@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/Button";
+import { Heart } from "lucide-react";
 
 const animations = {
   icon: {
@@ -73,7 +74,7 @@ export function UpvoteIconButton({ initialUpvoted = false, onUpvote, count = 0 }
         variant="ghost"
         onClick={handleClick}
         aria-pressed={isSaved}
-        className="pointer-events-auto flex items-center gap-1.5 hover:bg-[#f5c66d]/10 rounded-full h-10 px-3"
+        className="pointer-events-auto flex items-center gap-1.5 hover:bg-red-500/10 rounded-full h-10 px-3 transition-colors"
       >
         <motion.div
           initial={{ scale: 1 }}
@@ -84,19 +85,12 @@ export function UpvoteIconButton({ initialUpvoted = false, onUpvote, count = 0 }
           transition={{ type: "spring", stiffness: 300, damping: 15 }}
           className="relative flex items-center justify-center w-5 h-5"
         >
-          <svg className="absolute opacity-60 text-muted-foreground group-hover:text-[#f5c66d] transition-colors" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625zM15 12h-1v8h-4v-8H6.081L12 4.601 17.919 12z" />
-          </svg>
+          <Heart className="absolute opacity-60 text-muted-foreground group-hover:text-red-500 transition-colors w-5 h-5" />
 
-          <svg
-            className="absolute text-[#f5c66d] transition-all duration-300"
-            width="20"
-            height="20"
+          <Heart
+            className={`absolute text-red-500 transition-all duration-300 w-5 h-5 ${isSaved ? 'fill-red-500 opacity-100' : 'fill-transparent opacity-0'}`}
             aria-hidden="true"
-            style={{ opacity: isSaved ? 1 : 0 }}
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625zM15 12h-1v8h-4v-8H6.081L12 4.601 17.919 12z" />
-          </svg>
+          />
 
           <AnimatePresence>
             {isSaved && (
@@ -104,7 +98,7 @@ export function UpvoteIconButton({ initialUpvoted = false, onUpvote, count = 0 }
                 className="absolute inset-0 rounded-full"
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(245,198,109,0.4) 0%, rgba(245,198,109,0) 80%)",
+                    "radial-gradient(circle, rgba(239,68,68,0.4) 0%, rgba(239,68,68,0) 80%)",
                 }}
                 {...animations.burst}
               />
@@ -118,7 +112,7 @@ export function UpvoteIconButton({ initialUpvoted = false, onUpvote, count = 0 }
               {[...Array(5)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute rounded-full bg-[#f5c66d]"
+                  className="absolute rounded-full bg-red-500"
                   style={{
                     width: `${4 + Math.random() * 2}px`,
                     height: `${4 + Math.random() * 2}px`,
@@ -133,7 +127,7 @@ export function UpvoteIconButton({ initialUpvoted = false, onUpvote, count = 0 }
             </motion.div>
           )}
         </AnimatePresence>
-        <span className={`text-sm font-bold ${isSaved ? 'text-[#f5c66d]' : 'text-muted-foreground group-hover:text-[#f5c66d]'} transition-colors`}>
+        <span className={`text-sm font-bold ${isSaved ? 'text-red-500' : 'text-muted-foreground group-hover:text-red-500'} transition-colors`}>
           {localCount}
         </span>
       </Button>

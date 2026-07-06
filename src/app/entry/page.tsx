@@ -29,7 +29,7 @@ export default function EntryPage() {
             title="Yes, I've watched"
             description="Access fan theories, discussions and hidden details."
             buttonText="Continue"
-            href="/fan"
+            href="/characters"
             imgSrc="https://www.thiings.co/_next/image?url=https%3A%2F%2Flftz25oez4aqbxpq.public.blob.vercel-storage.com%2Fimage-2nDYzxsvMOLAC1EjdOOcEAM7VvkJcy.png&w=1000&q=75"
             imgAlt="Fan universe illustration"
             variant="gold"
