@@ -69,7 +69,7 @@ export default function CharactersPage() {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-5xl mb-32">
+      <div className="flex flex-wrap justify-center gap-6 w-full max-w-5xl mb-32">
         {characters.map((char, index) => {
           const isLiked = hasUpvoted(`char-${char.id}`);
 
@@ -79,7 +79,7 @@ export default function CharactersPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1 }}
-              className={`relative cursor-pointer group rounded-xl overflow-hidden border-2 transition-all duration-300 ${isLiked ? 'border-primary shadow-[0_0_15px_rgba(var(--primary),0.3)]' : 'border-border/50 hover:border-primary/50'
+              className={`w-[calc(50%-0.75rem)] md:w-[calc(33.333%-1rem)] relative cursor-pointer group rounded-xl overflow-hidden border-2 transition-all duration-300 ${isLiked ? 'border-primary shadow-[0_0_15px_rgba(var(--primary),0.3)]' : 'border-border/50 hover:border-primary/50'
                 }`}
               onClick={() => handleCharacterClick(char.id)}
             >

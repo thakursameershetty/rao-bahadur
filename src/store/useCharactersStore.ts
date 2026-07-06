@@ -14,10 +14,11 @@ interface CharactersState {
 }
 
 const defaultCharacters: Character[] = [
-  { id: 'Achamma', name: 'Achamma', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Achamma.jpg', likes: 0 },
-  { id: 'Achari', name: 'Achari', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Achari.jpg', likes: 0 },
-  { id: 'Kusuma', name: 'Kusuma', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Kusuma.jpg', likes: 0 },
+  { id: 'Rao_bahadur', name: 'Rao bahadur', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Rao-Bahadur.jpg', likes: 0 },
   { id: 'Renuka', name: 'Renuka', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Renuka.jpg', likes: 0 },
+  { id: 'Kusuma', name: 'Kusuma', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Kusuma.jpg', likes: 0 },
+  { id: 'Achari', name: 'Achari', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Achari.jpg', likes: 0 },
+  { id: 'Achamma', name: 'Achamma', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Achamma.jpg', likes: 0 },
 ];
 
 export const useCharactersStore = create<CharactersState>((set) => ({
