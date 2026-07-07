@@ -239,10 +239,16 @@ const CELEBRITY_VIDEOS = [
   { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Sukumar_compressed.mp4", title: "Sukumar" },
   { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Naga_Chaitanya_compressed.mp4", title: "Naga Chaitanya" },
   {
+    src: "https://res.cloudinary.com/uohqyl93/video/upload/v1783436194/raobahadur/xbkbvoxsi09ayt631u1i.mp4",
+    title: "Anand Devarakonda",
+    poster: "https://res.cloudinary.com/uohqyl93/video/upload/so_0.965/v1783436194/raobahadur/xbkbvoxsi09ayt631u1i.jpg"
+  },
+  {
     src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Rahul_Ravindran.mp4",
     title: "Rahul Ravindran",
     poster: "https://res.cloudinary.com/uohqyl93/video/upload/so_7.06/raobahadur/event/videos/Rahul_Ravindran.jpg"
   },
+  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/vivek_athreya.mp4", title: "Vivek Athreya" },
   {
     src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Hollywood_Reporter.mp4",
     title: "Hollywood Reporter",
@@ -255,6 +261,7 @@ const CELEBRITY_VIDEOS = [
 function CelebrityReactions() {
   const [activeVideo, setActiveVideo] = useState(-1);
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
+  const [globalMuted, setGlobalMuted] = useState(true);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -279,6 +286,8 @@ function CelebrityReactions() {
             poster={video.poster}
             title={video.title}
             isActive={activeVideo === idx}
+            isMuted={globalMuted}
+            onToggleMute={() => setGlobalMuted(!globalMuted)}
             onPlayClick={() => setActiveVideo(activeVideo === idx ? -1 : idx)}
             onEnded={() => setActiveVideo((idx + 1) % CELEBRITY_VIDEOS.length)}
           />
@@ -288,9 +297,8 @@ function CelebrityReactions() {
   );
 }
 
-function VideoCard({ src, poster, title, isActive, onPlayClick, onEnded }: { src: string, poster?: string, title: string, isActive: boolean, onPlayClick: () => void, onEnded: () => void }) {
+function VideoCard({ src, poster, title, isActive, isMuted, onToggleMute, onPlayClick, onEnded }: { src: string, poster?: string, title: string, isActive: boolean, isMuted: boolean, onToggleMute: () => void, onPlayClick: () => void, onEnded: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isMuted, setIsMuted] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -301,12 +309,15 @@ function VideoCard({ src, poster, title, isActive, onPlayClick, onEnded }: { src
     }
   }, [isActive]);
 
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
+    onToggleMute();
   };
 
   const handleTimeUpdate = () => {
@@ -390,6 +401,7 @@ export default function LandingPage() {
             src="/hero-bg.png"
             alt="Rao Bahadur Hero"
             fill
+            sizes="100vw"
             priority
             className="object-cover object-center hidden md:block"
           />
@@ -397,6 +409,7 @@ export default function LandingPage() {
             src="/hero-bg-mobile.png"
             alt="Rao Bahadur Hero Mobile"
             fill
+            sizes="100vw"
             priority
             className="object-cover object-center block md:hidden"
           />
