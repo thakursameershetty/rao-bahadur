@@ -5,12 +5,13 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
-import { Lock, Ticket, Popcorn, Smartphone } from "lucide-react";
+import { Lock, Ticket, Popcorn, Smartphone, X } from "lucide-react";
 import { celebs, theories, Celeb } from "@/data/mock";
 import { useState } from "react";
 
 export default function BuzzPage() {
   const [showBookingOptions, setShowBookingOptions] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
 
   return (
@@ -96,21 +97,56 @@ export default function BuzzPage() {
       <div className="space-y-10">
         <h2 className="font-serif text-3xl text-center text-primary">Viral Reactions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 15 }).map((_, i) => (
-            <div key={i} className="relative w-full rounded-2xl overflow-hidden shadow-lg border border-primary/20 bg-card/10 backdrop-blur-sm group">
-              <Image
-                src={`https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/letterboxd/letterboxd_${i + 1}.jpg`}
-                alt={`Viral Reaction ${i + 1}`}
-                width={500}
-                height={800}
-                className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-          ))}
+          {Array.from({ length: 15 }).map((_, i) => {
+            const imgSrc = `https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/letterboxd/letterboxd_${i + 1}.jpg`;
+            return (
+              <div
+                key={i}
+                className="relative w-full rounded-2xl overflow-hidden shadow-lg border border-primary/20 bg-card/10 backdrop-blur-sm group cursor-pointer"
+                onClick={() => setSelectedImage(imgSrc)}
+              >
+                <Image
+                  src={imgSrc}
+                  alt={`Viral Reaction ${i + 1}`}
+                  width={500}
+                  height={800}
+                  className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
 
 
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm whitespace-normal"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div
+            className="absolute top-4 right-4 md:top-8 md:right-8 cursor-pointer p-2 bg-black/50 rounded-full text-white hover:bg-black/80 transition-colors z-50"
+            onClick={() => setSelectedImage(null)}
+          >
+            <X size={24} />
+          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="relative w-full max-w-4xl max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={selectedImage}
+              alt="Expanded Reaction"
+              width={1200}
+              height={800}
+              className="w-auto h-auto max-w-full max-h-[90vh] object-contain rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)]"
+            />
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

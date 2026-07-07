@@ -273,19 +273,20 @@ function CelebrityReactions() {
         <h3 className="text-accent tracking-[0.3em] text-xs md:text-sm uppercase mb-4 font-semibold">Celebrity Reactions</h3>
         <h2 className="font-serif text-3xl md:text-5xl text-foreground text-center uppercase tracking-wider">They Came. They Saw. They Bowed.</h2>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+      <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
         {videos.map((video, idx) => (
-          <VideoCard
-            key={video.id || idx}
-            src={video.src}
-            poster={video.poster || video.src.replace('.mp4', '.jpg')}
-            title={video.title}
-            isActive={activeVideo === idx}
-            isMuted={globalMuted}
-            onToggleMute={() => setGlobalMuted(!globalMuted)}
-            onPlayClick={() => setActiveVideo(activeVideo === idx ? -1 : idx)}
-            onEnded={() => setActiveVideo((idx + 1) % videos.length)}
-          />
+          <div key={video.id || idx} className="w-full md:w-[calc(50%-12px)]">
+            <VideoCard
+              src={video.src}
+              poster={video.poster || video.src.replace('.mp4', '.jpg')}
+              title={video.title}
+              isActive={activeVideo === idx}
+              isMuted={globalMuted}
+              onToggleMute={() => setGlobalMuted(!globalMuted)}
+              onPlayClick={() => setActiveVideo(activeVideo === idx ? -1 : idx)}
+              onEnded={() => setActiveVideo((idx + 1) % videos.length)}
+            />
+          </div>
         ))}
       </div>
     </div>
