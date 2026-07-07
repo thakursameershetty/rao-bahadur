@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -8,7 +8,6 @@ import useSWR from "swr";
 import { Tweet, TweetSkeleton } from "@/components/ui/tweet";
 import { SessionModal } from "@/components/ui/SessionModal";
 import { useSession } from "@/hooks/useSession";
-import { useEffect } from "react";
 import { Facehash } from "facehash";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -37,7 +36,7 @@ const getTabIcon = (filterName: string) => {
   }
 };
 
-export default function FanPage() {
+function FanPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const {
@@ -421,5 +420,13 @@ export default function FanPage() {
         </AnimatePresence>
       </div>
     </div>
+  );
+}
+
+export default function FanPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen pb-24" />}>
+      <FanPageContent />
+    </Suspense>
   );
 }
