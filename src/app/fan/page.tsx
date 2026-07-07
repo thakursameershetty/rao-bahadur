@@ -175,10 +175,29 @@ function FanPageContent() {
   let filteredTheories = theories ? [...theories] : [];
 
   if (filter === "Trending") {
-    filteredTheories.sort(
-      (a: any, b: any) => (b.clicks || 0) - (a.clicks || 0),
-    );
-    filteredTheories = filteredTheories.slice(0, 5);
+    const maxLikes = filteredTheories.reduce((max: number, t: any) => Math.max(max, t.upvotes || 0), 0);
+
+    let trendingList = [...filteredTheories]
+      .sort((a: any, b: any) => (b.clicks || 0) - (a.clicks || 0))
+      .slice(0, 5)
+      .map((t: any) => ({ ...t }));
+
+    trendingList.sort((a: any, b: any) => (b.upvotes || 0) - (a.upvotes || 0));
+
+    if (maxLikes > 0) {
+      const highestLikedTheories = filteredTheories.filter((t: any) => (t.upvotes || 0) === maxLikes);
+
+      highestLikedTheories.forEach((ht: any) => {
+        const existingIndex = trendingList.findIndex((t: any) => t.id === ht.id);
+        if (existingIndex !== -1) {
+          trendingList[existingIndex].isTrendingThroughLikes = true;
+        } else {
+          trendingList.unshift({ ...ht, isTrendingThroughLikes: true });
+        }
+      });
+    }
+
+    filteredTheories = trendingList;
   } else if (filter === "New") {
     filteredTheories.sort(
       (a: any, b: any) =>
@@ -405,10 +424,11 @@ function FanPageContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {filteredTheories.map((theory: any, idx: number) => (
                 <motion.div
+                  layout
                   key={theory.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
+                  transition={{ duration: 0.3 }}
                   className="group relative"
                 >
                   <Link

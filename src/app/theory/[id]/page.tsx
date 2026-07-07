@@ -1,9 +1,11 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 import React, { useRef, useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Textarea } from "@/components/ui/Textarea";
@@ -15,7 +17,69 @@ import { SessionModal } from "@/components/ui/SessionModal";
 
 const fetcher = (url: string) => fetch(url).then(res => res.json());
 
+const HeartParticles = () => {
+  return (
+    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none overflow-visible flex items-center justify-center z-10">
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute"
+          initial={{ opacity: 0, scale: 0.5, x: 0, y: 0 }}
+          animate={{
+            opacity: [0, 1, 0],
+            scale: [0.5, 1.2, 0.8],
+            x: [(Math.random() - 0.5) * 20, (Math.random() - 0.5) * 40],
+            y: [5, -15 - Math.random() * 20]
+          }}
+          transition={{
+            duration: 1.5 + Math.random(),
+            repeat: Infinity,
+            delay: Math.random() * 2,
+            ease: "easeOut"
+          }}
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 text-red-500 drop-shadow-[0_0_5px_rgba(239,68,68,0.8)]">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+const BurstParticles = () => {
+  return (
+    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none overflow-visible flex items-center justify-center z-10">
+      {[...Array(5)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{
+            opacity: [0, 1, 0],
+            scale: [0.5, 1.2, 0.5],
+            x: [0, (Math.random() - 0.5) * 40],
+            y: [0, (Math.random() - 0.5) * 20],
+            rotate: [0, Math.random() * 180]
+          }}
+          transition={{
+            duration: 1.5,
+            repeat: Infinity,
+            delay: Math.random() * 2,
+            ease: "easeOut"
+          }}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-2.5 h-2.5 text-[#f5c66d] drop-shadow-[0_0_5px_rgba(245,198,109,0.8)]">
+            <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="currentColor" />
+          </svg>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
 export default function TheoryPage() {
+  const { mutate: globalMutate } = useSWRConfig();
   const params = useParams();
   const id = params?.id as string;
   const router = useRouter();
@@ -144,6 +208,7 @@ export default function TheoryPage() {
       body: JSON.stringify({ isUpvoted })
     });
     mutateTheory();
+    globalMutate("/api/theories?sort=new");
     return true;
   };
 
@@ -179,8 +244,15 @@ export default function TheoryPage() {
                 {theory.tag}
               </span>
               {theory.isTrending && (
-                <span className="text-xs uppercase tracking-wider px-2 py-1 bg-[#f5c66d]/20 text-[#f5c66d] rounded-sm font-bold shadow-[0_0_10px_rgba(245,198,109,0.2)]">
+                <span className="relative text-xs uppercase tracking-wider pl-2 pr-6 py-1 bg-[#f5c66d]/20 text-[#f5c66d] rounded-sm font-bold shadow-[0_0_10px_rgba(245,198,109,0.2)] flex items-center">
                   TRENDING • Through clicks
+                  <BurstParticles />
+                </span>
+              )}
+              {theory.isTrendingThroughLikes && (
+                <span className="relative text-xs uppercase tracking-wider pl-2 pr-6 py-1 bg-red-500/20 text-red-500 rounded-sm font-bold shadow-[0_0_10px_rgba(239,68,68,0.2)] flex items-center">
+                  TRENDING • THROUGH LIKES
+                  <HeartParticles />
                 </span>
               )}
             </div>

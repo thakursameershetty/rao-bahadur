@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const sort = searchParams.get("sort") || "trending";
@@ -21,6 +23,9 @@ export async function GET(request: Request) {
       });
       if (!theory) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
+      const maxUpvotesResult = await prisma.theory.aggregate({ _max: { upvotes: true } });
+      const maxUpvotes = maxUpvotesResult._max.upvotes || 0;
+
       return NextResponse.json({
         id: theory.id,
         title: theory.title,
@@ -28,12 +33,16 @@ export async function GET(request: Request) {
         author: theory.author,
         tag: theory.tag,
         isTrending: top5Ids.has(theory.id),
+        isTrendingThroughLikes: maxUpvotes > 0 && theory.upvotes === maxUpvotes,
         upvotes: theory.upvotes,
         clicks: theory.clicks,
         comments: theory._count.comments,
         createdAt: theory.createdAt.toISOString()
       });
     }
+
+    const maxUpvotesResultArray = await prisma.theory.aggregate({ _max: { upvotes: true } });
+    const maxUpvotesArray = maxUpvotesResultArray._max.upvotes || 0;
 
     const theories = await prisma.theory.findMany({
       include: {
@@ -52,6 +61,7 @@ export async function GET(request: Request) {
       author: t.author,
       tag: t.tag,
       isTrending: top5Ids.has(t.id),
+      isTrendingThroughLikes: maxUpvotesArray > 0 && t.upvotes === maxUpvotesArray,
       upvotes: t.upvotes,
       clicks: t.clicks,
       comments: t._count.comments,
