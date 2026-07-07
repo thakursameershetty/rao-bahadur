@@ -577,7 +577,7 @@ function FanPageContent() {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 20 }}
-                  className="text-center px-4 text-base md:text-lg font-bold font-serif text-[#f5c66d] drop-shadow-md mb-6 leading-tight uppercase tracking-wider mt-4 md:mt-0"
+                  className="text-center px-4 text-sm md:text-base font-bold font-serif text-[#f5c66d] drop-shadow-md mb-2 md:mb-4 leading-tight uppercase tracking-wider mt-4 md:mt-0"
                 >
                   You have discovered <br className="hidden md:block" />
                   A hidden easter egg
@@ -593,7 +593,7 @@ function FanPageContent() {
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="relative w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 shrink-0"
+                  className="relative w-24 h-24 md:w-32 md:h-32 mx-auto my-6 md:my-10 shrink-0"
                 >
                   <Image
                     src="https://res.cloudinary.com/uohqyl93/image/upload/v1783453448/raobahadur/insect.png"
@@ -626,19 +626,19 @@ function FanPageContent() {
                   {isTelugu ? (
                     <>
                       <p>
-                        ఈ చిన్న పురుగు అనుమానం మరియు సందేహానికి శక్తివంతమైన ప్రతీకగా నిలుస్తుంది. కనిపించకుండా మన చుట్టూ చేరే చిన్న పురుగు ఎలా క్రమంగా అసౌకర్యాన్ని కలిగిస్తుందో, అలాగే ఒక చిన్న అనుమానం కథానాయకుడి మనసులో నిశ్శబ్దంగా ప్రవేశించి, క్రమంగా అతని ఆలోచనలను ఆక్రమిస్తుంది. ఆ అనుమానం పెరుగుతూ, అతని చుట్టూ ఉన్న ప్రతి విషయాన్ని ప్రశ్నించే స్థితికి తీసుకెళ్తుంది.
+                        ఈ చిన్న పురుగు అనుమానానికి శక్తివంతమైన ప్రతీక. కనిపించకుండా చేరే పురుగులా, ఒక చిన్న సందేహం కథానాయకుడి మనసులో నిశ్శబ్దంగా ప్రవేశించి అతని వాస్తవాన్ని వక్రీకరిస్తుంది. అది క్రమంగా పెరిగి అతని ఆలోచనలన్నింటినీ ఆక్రమిస్తుంది.
                       </p>
                       <p>
-                        ఈ సూక్ష్మమైన కానీ ప్రభావవంతమైన ప్రతీక ద్వారా దర్శకుడు <a href="https://x.com/mahaisnotanoun" target="_blank" rel="noopener noreferrer" className="text-[#f5c66d] hover:underline" onClick={(e) => e.stopPropagation()}>వెంకటేష్ మహా</a>{" "}ఒక చిన్న సందేహం ఎలా మనిషి ఆలోచనలను, అతని వాస్తవాన్ని పూర్తిగా మార్చగలదో అద్భుతంగా ఆవిష్కరించారు. చివరికి, అదే అనుమానం అతని జీవితంలో అతిపెద్ద శత్రువుగా మారుతుంది.
+                        దర్శకుడు <a href="https://x.com/mahaisnotanoun" target="_blank" rel="noopener noreferrer" className="text-[#f5c66d] hover:underline" onClick={(e) => e.stopPropagation()}>వెంకటేష్ మహా</a>{" "}ఈ ప్రతీక ద్వారా, ఒక చిన్న సందేహం మనిషి ఆలోచనలను ఎలా మార్చేసి, చివరికి అతనికి అతిపెద్ద శత్రువుగా మారుతుందో అద్భుతంగా ఆవిష్కరించారు.
                       </p>
                     </>
                   ) : (
                     <>
                       <p>
-                        The insect serves as a powerful metaphor for doubt and suspicion. Like a tiny insect that quietly slips into your space unnoticed, a single seed of doubt enters the protagonist&apos;s mind, gradually growing until it distorts his perception of reality. What begins as an almost invisible presence slowly consumes his thoughts, making him question everything around him.
+                        The insect is a powerful metaphor for doubt. Like a tiny bug slipping in unnoticed, a single seed of suspicion enters the protagonist&apos;s mind and grows to distort his reality. What begins as an invisible presence slowly consumes him, making him question everything.
                       </p>
                       <p>
-                        Through this subtle yet striking symbol, director <a href="https://x.com/mahaisnotanoun" target="_blank" rel="noopener noreferrer" className="text-[#f5c66d] hover:underline" onClick={(e) => e.stopPropagation()}>Venkatesh Maha</a>{" "}masterfully illustrates how the smallest suspicion can evolve into an overwhelming force—reshaping a person&apos;s mind, altering their reality, and becoming their greatest enemy.
+                        Through this striking symbol, director <a href="https://x.com/mahaisnotanoun" target="_blank" rel="noopener noreferrer" className="text-[#f5c66d] hover:underline" onClick={(e) => e.stopPropagation()}>Venkatesh Maha</a>{" "}illustrates how the smallest suspicion can evolve into an overwhelming force, ultimately becoming one&apos;s greatest enemy.
                       </p>
                     </>
                   )}
