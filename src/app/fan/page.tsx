@@ -305,11 +305,16 @@ function FanPageContent() {
         <AnimatePresence>
           {isSearchOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+              initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
+              transition={{
+                opacity: { duration: 0.2 },
+                height: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+              }}
+              className="overflow-hidden"
             >
-              <div className="container mx-auto px-4 py-2">
+              <div className="container mx-auto px-4 py-2 pt-3 pb-4">
                 <div className="relative max-w-2xl mx-auto">
                   <input
                     type="text"
