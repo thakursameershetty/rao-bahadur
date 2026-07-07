@@ -24,7 +24,7 @@ const getTabIcon = (filterName: string) => {
 };
 
 export default function FanPage() {
-  const { data: theories, error, mutate } = useSWR("/api/theories?sort=trending", fetcher);
+  const { data: theories, error, mutate } = useSWR("/api/theories?sort=new", fetcher, { refreshInterval: 3000 });
   const { isReady, username, hasUpvoted, toggleUpvote, hasSaved, toggleSave } = useSession();
 
   const [filter, setFilter] = useState("All");
