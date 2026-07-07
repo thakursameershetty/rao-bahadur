@@ -97,7 +97,7 @@ const TweetHeader = ({
             onSave(!isSaved);
           }}
           className={cn(
-            "p-1.5 rounded-full transition-colors",
+            "p-1.5 rounded-full transition-colors pointer-events-auto",
             isSaved ? "text-primary hover:bg-primary/10" : "text-muted-foreground hover:text-primary hover:bg-primary/10"
           )}
           title={isSaved ? "Remove bookmark" : "Bookmark"}
@@ -105,7 +105,7 @@ const TweetHeader = ({
           <Bookmark className="size-5" fill={isSaved ? "currentColor" : "none"} />
         </button>
       ) : (
-        <a href={tweet.url} target="_blank" rel="noopener noreferrer" className="p-1.5">
+        <a href={tweet.url} target="_blank" rel="noopener noreferrer" className="p-1.5 pointer-events-auto">
           <Bookmark className="size-5 text-muted-foreground transition-colors hover:text-primary" />
         </a>
       )}
@@ -116,7 +116,7 @@ const TweetHeader = ({
             e.stopPropagation();
             onDelete?.();
           }}
-          className="text-red-500/80 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-500/10 z-10"
+          className="text-red-500/80 hover:text-red-500 transition-colors p-1.5 rounded-full hover:bg-red-500/10 z-10 pointer-events-auto"
           title="Delete theory"
         >
           <Trash2 className="size-4" />
