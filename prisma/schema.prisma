@@ -43,3 +43,13 @@ model GlobalStat {
   id    String @id @default("counter")
   count Int    @default(12438201)
 }
+
+model CelebrityVideo {
+  id        String   @id @default(uuid())
+  title     String
+  src       String
+  poster    String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+

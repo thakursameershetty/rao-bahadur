@@ -9,6 +9,10 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Heart, Star, VolumeX, Volume2, Play, Pause, X } from "lucide-react";
 import { Celeb, Review } from "@/data/mock";
 import CountUp from "@/components/ui/count-up";
+import useSWR from 'swr';
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 function LoveCounter() {
   const [count, setCount] = useState(51347);
   const [isClient, setIsClient] = useState(false);
@@ -235,42 +239,33 @@ function TweetMarquee() {
   );
 }
 
-const CELEBRITY_VIDEOS = [
-  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Sukumar_compressed.mp4", title: "Sukumar" },
-  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Naga_Chaitanya_compressed.mp4", title: "Naga Chaitanya" },
-  {
-    src: "https://res.cloudinary.com/uohqyl93/video/upload/v1783436194/raobahadur/xbkbvoxsi09ayt631u1i.mp4",
-    title: "Anand Devarakonda",
-    poster: "https://res.cloudinary.com/uohqyl93/video/upload/so_0.965/v1783436194/raobahadur/xbkbvoxsi09ayt631u1i.jpg"
-  },
-  {
-    src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Rahul_Ravindran.mp4",
-    title: "Rahul Ravindran",
-    poster: "https://res.cloudinary.com/uohqyl93/video/upload/so_7.06/raobahadur/event/videos/Rahul_Ravindran.jpg"
-  },
-  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/vivek_athreya.mp4", title: "Vivek Athreya" },
-  {
-    src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Hollywood_Reporter.mp4",
-    title: "Hollywood Reporter",
-    poster: "https://res.cloudinary.com/uohqyl93/video/upload/so_5.0/raobahadur/event/videos/Hollywood_Reporter.jpg"
-  },
-  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/Critics.mp4", title: "Critics" },
-  { src: "https://res.cloudinary.com/uohqyl93/video/upload/raobahadur/event/videos/RB_public_Review_Plain.mp4", title: "Public Review" }
-];
+type Video = {
+  id: string;
+  title: string;
+  src: string;
+  poster: string | null;
+  order: number;
+};
 
 function CelebrityReactions() {
   const [activeVideo, setActiveVideo] = useState(-1);
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
   const [globalMuted, setGlobalMuted] = useState(true);
+  
+  const { data: videosData } = useSWR('/api/admin/videos', fetcher, { refreshInterval: 5000 });
+  const videos: Video[] = Array.isArray(videosData) ? videosData : [];
+  
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   useEffect(() => {
-    if (isInView && !hasAutoPlayed) {
+    if (isInView && !hasAutoPlayed && videos.length > 0) {
       setActiveVideo(0);
       setHasAutoPlayed(true);
     }
-  }, [isInView, hasAutoPlayed]);
+  }, [isInView, hasAutoPlayed, videos.length]);
+
+  if (videos.length === 0) return null;
 
   return (
     <div ref={ref} className="space-y-12 pt-10">
@@ -279,17 +274,17 @@ function CelebrityReactions() {
         <h2 className="font-serif text-3xl md:text-5xl text-foreground text-center uppercase tracking-wider">They Came. They Saw. They Bowed.</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-        {CELEBRITY_VIDEOS.map((video, idx) => (
+        {videos.map((video, idx) => (
           <VideoCard
-            key={idx}
+            key={video.id || idx}
             src={video.src}
-            poster={video.poster}
+            poster={video.poster || video.src.replace('.mp4', '.jpg')}
             title={video.title}
             isActive={activeVideo === idx}
             isMuted={globalMuted}
             onToggleMute={() => setGlobalMuted(!globalMuted)}
             onPlayClick={() => setActiveVideo(activeVideo === idx ? -1 : idx)}
-            onEnded={() => setActiveVideo((idx + 1) % CELEBRITY_VIDEOS.length)}
+            onEnded={() => setActiveVideo((idx + 1) % videos.length)}
           />
         ))}
       </div>
