@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Heart, Star, VolumeX, Volume2, Play, Pause, X } from "lucide-react";
 import { Celeb, Review } from "@/data/mock";
-
+import CountUp from "@/components/ui/count-up";
 function LoveCounter() {
   const [count, setCount] = useState(51347);
   const [isClient, setIsClient] = useState(false);
@@ -73,12 +73,11 @@ function LoveCounter() {
         </motion.div>
         <div className="font-display text-5xl md:text-7xl font-medium tabular-nums text-gold tracking-wide leading-none flex items-center">
           <motion.span
-            key={count}
             initial={{ opacity: 0.5, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
           >
-            {isClient ? count.toLocaleString('en-IN') : (51347).toLocaleString('en-IN')}
+            <CountUp to={count} duration={1} separator="," />
           </motion.span>
         </div>
       </div>
@@ -127,7 +126,7 @@ function HourlySalesIndicator({ sales }: { sales: number }) {
           </span>
 
           <p className="text-sm font-medium text-gray-300 tracking-wide">
-            <span className="text-white font-bold">{sales.toLocaleString('en-IN')}+</span> tickets sold so far
+            <span className="text-white font-bold"><CountUp to={sales} duration={1} separator="," />+</span> tickets sold so far
           </p>
         </div>
 
