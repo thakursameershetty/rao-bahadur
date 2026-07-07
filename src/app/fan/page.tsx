@@ -145,8 +145,8 @@ export default function FanPage() {
       {/* Sticky Tabs */}
       <div
         className={`sticky top-0 z-50 pt-4 pb-0 mb-4 transition-all duration-300 ${isScrolled
-            ? "bg-background/30 backdrop-blur-2xl border-b border-border/10 shadow-sm"
-            : "bg-transparent border-transparent"
+          ? "bg-background/30 backdrop-blur-2xl border-b border-border/10 shadow-sm"
+          : "bg-transparent border-transparent"
           }`}
       >
         <div className="container mx-auto px-4">
@@ -158,8 +158,8 @@ export default function FanPage() {
                   key={f}
                   onClick={() => setFilter(f)}
                   className={`relative flex-1 sm:flex-none px-4 sm:px-6 py-4 text-sm sm:text-base whitespace-nowrap transition-colors ${isActive
-                      ? "text-[#f5c66d] font-bold"
-                      : "text-muted-foreground font-medium hover:text-[#f5c66d]/80"
+                    ? "text-[#f5c66d] font-bold"
+                    : "text-muted-foreground font-medium hover:text-[#f5c66d]/80"
                     }`}
                 >
                   <div className="flex items-center justify-center">
@@ -183,8 +183,8 @@ export default function FanPage() {
       {/* Scroll to Top Pill */}
       <div
         className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out ${isDeepScrolled
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-8 pointer-events-none"
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 -translate-y-8 pointer-events-none"
           }`}
       >
         <button
@@ -408,8 +408,8 @@ export default function FanPage() {
                   </span>
                   <span
                     className={`whitespace-nowrap transition-all duration-500 ${isScrolled
-                        ? "opacity-0 max-w-0 scale-95"
-                        : "opacity-100 max-w-[200px] scale-100"
+                      ? "opacity-0 max-w-0 scale-95"
+                      : "opacity-100 max-w-[200px] scale-100"
                       }`}
                   >
                     Post Your Theory
