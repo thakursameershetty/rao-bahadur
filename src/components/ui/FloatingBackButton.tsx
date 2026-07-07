@@ -14,7 +14,7 @@ export function FloatingBackButton() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleBack = () => {
-    if (window.history.length > 2) {
+    if (window.history.length > 1) {
       router.back();
     } else {
       router.push("/fan");

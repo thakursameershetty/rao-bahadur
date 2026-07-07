@@ -140,6 +140,20 @@ function FanPageContent() {
     }
   }, [searchQuery]);
 
+  // Restore scroll position after theories load
+  useEffect(() => {
+    if (theories) {
+      const savedScroll = sessionStorage.getItem("fanScroll");
+      if (savedScroll) {
+        // Wait a tick for the DOM and Framer Motion to render the list
+        setTimeout(() => {
+          window.scrollTo({ top: parseInt(savedScroll, 10), behavior: "instant" });
+          sessionStorage.removeItem("fanScroll");
+        }, 100);
+      }
+    }
+  }, [theories]);
+
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("search-toggled", { detail: isSearchOpen }));
   }, [isSearchOpen]);
@@ -245,7 +259,7 @@ function FanPageContent() {
         <div
           className={`fixed top-8 right-8 z-50 transition-all duration-300 ${isScrolled || isSearchOpen ? "opacity-0 -translate-y-4 pointer-events-none" : "opacity-100 translate-y-0"}`}
         >
-          <Link href="/my-theories" passHref>
+          <Link href="/my-theories" passHref onClick={() => sessionStorage.setItem("fanScroll", window.scrollY.toString())}>
             <button
               title="My Theories"
               className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-card/70 backdrop-blur-md text-foreground rounded-full border border-border/50 shadow-lg hover:scale-105 hover:border-[#f5c66d]/50 transition-all duration-300 overflow-hidden"
@@ -433,6 +447,7 @@ function FanPageContent() {
                 >
                   <Link
                     href={`/theory/${theory.id}`}
+                    onClick={() => sessionStorage.setItem("fanScroll", window.scrollY.toString())}
                     className="absolute inset-0 z-0"
                     aria-label="View theory"
                   ></Link>
@@ -534,7 +549,7 @@ function FanPageContent() {
                 </svg>
               </button>
 
-              <Link href="/post" passHref>
+              <Link href="/post" passHref onClick={() => sessionStorage.setItem("fanScroll", window.scrollY.toString())}>
                 <button
                   className={`flex items-center justify-center bg-[#f5c66d] text-black rounded-full font-bold text-[11px] uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(245,198,109,0.3)] hover:scale-105 transition-all duration-500 overflow-hidden ${isScrolled ? "w-14 h-14 gap-0" : "px-8 py-4 gap-3 w-auto"
                     }`}
