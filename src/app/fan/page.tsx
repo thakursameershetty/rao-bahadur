@@ -122,43 +122,52 @@ function FanPageContent() {
         onClose={() => setShowSessionModal(false)}
         message="Enter your username to interact with theories!"
       />
-      {/* Header */}
-      <div className="pt-20 pb-10 relative">
-        {/* Profile Button Top Right */}
-        {username && (
-          <div
-            className={`fixed top-8 right-8 z-50 transition-all duration-300 ${isScrolled ? "opacity-0 -translate-y-4 pointer-events-none" : "opacity-100 translate-y-0"}`}
-          >
-            <Link href="/my-theories" passHref>
-              <button
-                title="My Theories"
-                className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-card/70 backdrop-blur-md text-foreground rounded-full border border-border/50 shadow-lg hover:scale-105 hover:border-[#f5c66d]/50 transition-all duration-300 overflow-hidden"
-              >
-                <Facehash name={username} size={56} enableBlink={true} />
-              </button>
-            </Link>
-          </div>
-        )}
-
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center justify-center text-center space-y-4">
-            <span className="text-accent text-[10px] md:text-xs font-bold uppercase tracking-[0.3em]">
-              The Fan Universe
-            </span>
-            <h1 className="font-serif text-5xl md:text-7xl text-gradient-gold uppercase tracking-wider">
-              Join the Conversation
-            </h1>
-            <p className="text-muted-foreground max-w-md mx-auto pt-2">
-              Read theories, join discussions and share your own.
-            </p>
-          </div>
+      {/* Profile Button Top Right */}
+      {username && (
+        <div
+          className={`fixed top-8 right-8 z-50 transition-all duration-300 ${isScrolled || isSearchOpen ? "opacity-0 -translate-y-4 pointer-events-none" : "opacity-100 translate-y-0"}`}
+        >
+          <Link href="/my-theories" passHref>
+            <button
+              title="My Theories"
+              className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-card/70 backdrop-blur-md text-foreground rounded-full border border-border/50 shadow-lg hover:scale-105 hover:border-[#f5c66d]/50 transition-all duration-300 overflow-hidden"
+            >
+              <Facehash name={username} size={56} enableBlink={true} />
+            </button>
+          </Link>
         </div>
-      </div>
+      )}
+
+      {/* Header */}
+      <AnimatePresence>
+        {!isSearchOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="pt-20 pb-10 relative overflow-hidden"
+          >
+            <div className="container mx-auto px-4">
+              <div className="flex flex-col items-center justify-center text-center space-y-4">
+                <span className="text-accent text-[10px] md:text-xs font-bold uppercase tracking-[0.3em]">
+                  The Fan Universe
+                </span>
+                <h1 className="font-serif text-5xl md:text-7xl text-gradient-gold uppercase tracking-wider">
+                  Join the Conversation
+                </h1>
+                <p className="text-muted-foreground max-w-md mx-auto pt-2">
+                  Read theories, join discussions and share your own.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div ref={tabsRef} />
       {/* Sticky Tabs */}
       <div
-        className={`sticky top-0 z-50 pt-4 pb-0 mb-4 transition-all duration-300 ${isScrolled
+        className={`sticky top-0 z-50 pt-4 pb-0 mb-4 transition-all duration-300 ${isScrolled || isSearchOpen
           ? "bg-background/30 backdrop-blur-2xl border-b border-border/10 shadow-sm"
           : "bg-transparent border-transparent"
           }`}
