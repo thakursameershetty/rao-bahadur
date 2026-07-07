@@ -3,32 +3,48 @@ import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    let stat = await prisma.globalStat.findUnique({
+    let viewStat = await prisma.globalStat.findUnique({
       where: { id: "view_counter" }
     });
 
-    if (!stat) {
-      stat = await prisma.globalStat.create({
+    let salesStat = await prisma.globalStat.findUnique({
+      where: { id: "sales_counter" }
+    });
+
+    if (!viewStat) {
+      viewStat = await prisma.globalStat.create({
         data: { id: "view_counter", count: 51347 }
       });
     }
 
-    return NextResponse.json({ count: stat.count });
+    if (!salesStat) {
+      salesStat = await prisma.globalStat.create({
+        data: { id: "sales_counter", count: 265000 }
+      });
+    }
+
+    return NextResponse.json({ count: viewStat.count, sales: salesStat.count });
   } catch (error) {
     console.error("Error fetching counter:", error);
-    return NextResponse.json({ count: 51347 }, { status: 500 });
+    return NextResponse.json({ count: 51347, sales: 265000 }, { status: 500 });
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const stat = await prisma.globalStat.upsert({
+    const viewStat = await prisma.globalStat.upsert({
       where: { id: "view_counter" },
       update: { count: { increment: 1 } },
       create: { id: "view_counter", count: 51347 }
     });
 
-    return NextResponse.json({ count: stat.count });
+    const salesStat = await prisma.globalStat.upsert({
+      where: { id: "sales_counter" },
+      update: { count: { increment: 1 } },
+      create: { id: "sales_counter", count: 265000 }
+    });
+
+    return NextResponse.json({ count: viewStat.count, sales: salesStat.count });
   } catch (error) {
     console.error("Error updating counter:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

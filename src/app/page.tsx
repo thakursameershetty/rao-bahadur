@@ -27,7 +27,9 @@ function LoveCounter() {
           if (data.count && mounted) {
             setCount(data.count);
             countRef.current = data.count;
-            setSales(265000 + (data.count - 51347));
+            if (data.sales) {
+              setSales(data.sales);
+            }
           }
         }
       } catch (err) {
@@ -41,10 +43,12 @@ function LoveCounter() {
         const res = await fetch('/api/counter');
         if (res.ok) {
           const data = await res.json();
-          if (data.count && data.count > countRef.current && mounted) {
+          if (data.count && data.count !== countRef.current && mounted) {
             setCount(data.count);
             countRef.current = data.count;
-            setSales(265000 + (data.count - 51347));
+          }
+          if (data.sales && mounted) {
+            setSales(data.sales);
           }
         }
       } catch (err) {
