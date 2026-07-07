@@ -64,14 +64,27 @@ function FanPageContent() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
       setIsDeepScrolled(window.scrollY > 1500);
+    };
+
+    const handleUserInteractionScroll = () => {
+      if (searchQuery.trim().length > 0) return; // Keep open if there's text
+
       setIsSearchOpen((prev) => {
         if (prev) return false;
         return prev;
       });
     };
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("wheel", handleUserInteractionScroll, { passive: true });
+    window.addEventListener("touchmove", handleUserInteractionScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("wheel", handleUserInteractionScroll);
+      window.removeEventListener("touchmove", handleUserInteractionScroll);
+    };
+  }, [searchQuery]);
 
   const filters = ["Trending", "New", "Hidden Detail"];
 
@@ -316,9 +329,9 @@ function FanPageContent() {
                   placeholder="Search theories, authors..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-card/80 border border-[#f5c66d]/30 rounded-full py-4 pl-12 pr-4 text-foreground placeholder:text-muted-foreground outline-none focus:border-[#f5c66d] transition-colors backdrop-blur-md shadow-[0_0_30px_rgba(245,198,109,0.15)]"
+                  className="w-full bg-card/80 border border-[#f5c66d]/30 rounded-full py-4 pl-12 pr-12 text-foreground placeholder:text-muted-foreground outline-none focus:border-[#f5c66d] transition-colors backdrop-blur-md shadow-[0_0_30px_rgba(245,198,109,0.15)]"
                 />
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#f5c66d]">
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#f5c66d] pointer-events-none">
                   <svg
                     width="20"
                     height="20"
@@ -338,7 +351,8 @@ function FanPageContent() {
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-1 bg-[#f5c66d]/10 rounded-full text-[#f5c66d] hover:bg-[#f5c66d]/20 hover:scale-110 transition-all"
+                    aria-label="Clear search"
                   >
                     <svg
                       width="20"
