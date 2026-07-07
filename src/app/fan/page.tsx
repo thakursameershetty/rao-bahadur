@@ -542,21 +542,12 @@ function FanPageContent() {
             className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-xl p-4"
             onClick={() => setHideEasterEgg(true)}
           >
-            <motion.p
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 20 }}
-              className="absolute top-16 md:top-24 left-0 right-0 text-center px-4 text-lg md:text-xl font-bold font-serif text-[#f5c66d] drop-shadow-md z-50 pointer-events-none leading-tight"
-            >
-              You have discovered <br />
-              A hidden easter egg
-            </motion.p>
             <motion.div
               initial={{ scale: 0.9, y: 20, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 20, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative max-w-md w-full bg-card/50 border border-[#f5c66d]/20 rounded-3xl p-8 text-center shadow-2xl overflow-hidden"
+              className="relative max-w-md w-full max-h-[90vh] bg-card/50 border border-[#f5c66d]/20 rounded-3xl text-center shadow-2xl overflow-hidden flex flex-col"
               onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the card
             >
               {/* Background Glow */}
@@ -567,7 +558,7 @@ function FanPageContent() {
                   e.stopPropagation();
                   setIsTelugu(!isTelugu);
                 }}
-                className="absolute top-4 right-4 z-10 p-2 bg-[#f5c66d]/10 hover:bg-[#f5c66d]/20 rounded-full transition-colors text-[#f5c66d]"
+                className="absolute top-4 right-4 z-20 p-2 bg-[#f5c66d]/10 hover:bg-[#f5c66d]/20 rounded-full transition-colors text-[#f5c66d]"
                 title="Translate"
                 aria-label="Translate"
               >
@@ -581,85 +572,97 @@ function FanPageContent() {
                 </svg>
               </button>
 
-              <motion.div
-                animate={{
-                  y: [0, -10, 0],
-                  rotate: [0, 2, -2, 0]
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-                className="relative w-32 h-32 mx-auto mb-6"
-              >
-                <Image
-                  src="https://res.cloudinary.com/uohqyl93/image/upload/v1783453448/raobahadur/insect.png"
-                  alt="The Insect"
-                  fill
-                  className="object-contain drop-shadow-[0_0_15px_rgba(245,198,109,0.4)]"
-                />
-              </motion.div>
+              <div className="relative z-10 overflow-y-auto p-6 md:p-8 flex flex-col items-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 20 }}
+                  className="text-center px-4 text-base md:text-lg font-bold font-serif text-[#f5c66d] drop-shadow-md mb-6 leading-tight uppercase tracking-wider mt-4 md:mt-0"
+                >
+                  You have discovered <br className="hidden md:block" />
+                  A hidden easter egg
+                </motion.p>
 
-              <motion.h3
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="flex items-center justify-center text-[#f5c66d] font-bold tracking-wider uppercase text-lg mb-4"
-              >
-                <div className="flex flex-col items-center gap-1">
-                  <span>Insect of Doubt</span>
-                  <span className="text-sm opacity-80 normal-case tracking-normal">
-                    {isTelugu ? "(అనుమానం పెను భూతం)" : "(Anumanam Penu Bhutam)"}
-                  </span>
-                </div>
-              </motion.h3>
+                <motion.div
+                  animate={{
+                    y: [0, -10, 0],
+                    rotate: [0, 2, -2, 0]
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="relative w-24 h-24 md:w-32 md:h-32 mx-auto mb-6 shrink-0"
+                >
+                  <Image
+                    src="https://res.cloudinary.com/uohqyl93/image/upload/v1783453448/raobahadur/insect.png"
+                    alt="The Insect"
+                    fill
+                    className="object-contain drop-shadow-[0_0_15px_rgba(245,198,109,0.4)]"
+                  />
+                </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="text-muted-foreground/90 text-sm text-justify leading-relaxed mb-8 flex flex-col gap-3"
-              >
-                {isTelugu ? (
-                  <>
-                    <p>
-                      ఈ చిన్న పురుగు అనుమానం మరియు సందేహానికి శక్తివంతమైన ప్రతీకగా నిలుస్తుంది. కనిపించకుండా మన చుట్టూ చేరే చిన్న పురుగు ఎలా క్రమంగా అసౌకర్యాన్ని కలిగిస్తుందో, అలాగే ఒక చిన్న అనుమానం కథానాయకుడి మనసులో నిశ్శబ్దంగా ప్రవేశించి, క్రమంగా అతని ఆలోచనలను ఆక్రమిస్తుంది. ఆ అనుమానం పెరుగుతూ, అతని చుట్టూ ఉన్న ప్రతి విషయాన్ని ప్రశ్నించే స్థితికి తీసుకెళ్తుంది.
-                    </p>
-                    <p>
-                      ఈ సూక్ష్మమైన కానీ ప్రభావవంతమైన ప్రతీక ద్వారా దర్శకుడు <a href="https://x.com/mahaisnotanoun" target="_blank" rel="noopener noreferrer" className="text-[#f5c66d] hover:underline" onClick={(e) => e.stopPropagation()}>వెంకటేష్ మహా</a>{" "}ఒక చిన్న సందేహం ఎలా మనిషి ఆలోచనలను, అతని వాస్తవాన్ని పూర్తిగా మార్చగలదో అద్భుతంగా ఆవిష్కరించారు. చివరికి, అదే అనుమానం అతని జీవితంలో అతిపెద్ద శత్రువుగా మారుతుంది.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <p>
-                      The insect serves as a powerful metaphor for doubt and suspicion. Like a tiny insect that quietly slips into your space unnoticed, a single seed of doubt enters the protagonist&apos;s mind, gradually growing until it distorts his perception of reality. What begins as an almost invisible presence slowly consumes his thoughts, making him question everything around him.
-                    </p>
-                    <p>
-                      Through this subtle yet striking symbol, director <a href="https://x.com/mahaisnotanoun" target="_blank" rel="noopener noreferrer" className="text-[#f5c66d] hover:underline" onClick={(e) => e.stopPropagation()}>Venkatesh Maha</a>{" "}masterfully illustrates how the smallest suspicion can evolve into an overwhelming force—reshaping a person&apos;s mind, altering their reality, and becoming their greatest enemy.
-                    </p>
-                  </>
-                )}
-              </motion.div>
+                <motion.h3
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="flex items-center justify-center text-[#f5c66d] font-bold tracking-wider uppercase text-lg mb-4"
+                >
+                  <div className="flex flex-col items-center gap-1">
+                    <span>Insect of Doubt</span>
+                    <span className="text-sm opacity-80 normal-case tracking-normal">
+                      {isTelugu ? "(అనుమానం పెను భూతం)" : "(Anumanam Penu Bhutam)"}
+                    </span>
+                  </div>
+                </motion.h3>
 
-              <motion.h4
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="text-[#f5c66d] font-serif text-lg md:text-xl font-bold text-center mb-6"
-              >
-                A Mahasterpiece.
-              </motion.h4>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-muted-foreground/90 text-sm text-justify leading-relaxed mb-8 flex flex-col gap-3"
+                >
+                  {isTelugu ? (
+                    <>
+                      <p>
+                        ఈ చిన్న పురుగు అనుమానం మరియు సందేహానికి శక్తివంతమైన ప్రతీకగా నిలుస్తుంది. కనిపించకుండా మన చుట్టూ చేరే చిన్న పురుగు ఎలా క్రమంగా అసౌకర్యాన్ని కలిగిస్తుందో, అలాగే ఒక చిన్న అనుమానం కథానాయకుడి మనసులో నిశ్శబ్దంగా ప్రవేశించి, క్రమంగా అతని ఆలోచనలను ఆక్రమిస్తుంది. ఆ అనుమానం పెరుగుతూ, అతని చుట్టూ ఉన్న ప్రతి విషయాన్ని ప్రశ్నించే స్థితికి తీసుకెళ్తుంది.
+                      </p>
+                      <p>
+                        ఈ సూక్ష్మమైన కానీ ప్రభావవంతమైన ప్రతీక ద్వారా దర్శకుడు <a href="https://x.com/mahaisnotanoun" target="_blank" rel="noopener noreferrer" className="text-[#f5c66d] hover:underline" onClick={(e) => e.stopPropagation()}>వెంకటేష్ మహా</a>{" "}ఒక చిన్న సందేహం ఎలా మనిషి ఆలోచనలను, అతని వాస్తవాన్ని పూర్తిగా మార్చగలదో అద్భుతంగా ఆవిష్కరించారు. చివరికి, అదే అనుమానం అతని జీవితంలో అతిపెద్ద శత్రువుగా మారుతుంది.
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <p>
+                        The insect serves as a powerful metaphor for doubt and suspicion. Like a tiny insect that quietly slips into your space unnoticed, a single seed of doubt enters the protagonist&apos;s mind, gradually growing until it distorts his perception of reality. What begins as an almost invisible presence slowly consumes his thoughts, making him question everything around him.
+                      </p>
+                      <p>
+                        Through this subtle yet striking symbol, director <a href="https://x.com/mahaisnotanoun" target="_blank" rel="noopener noreferrer" className="text-[#f5c66d] hover:underline" onClick={(e) => e.stopPropagation()}>Venkatesh Maha</a>{" "}masterfully illustrates how the smallest suspicion can evolve into an overwhelming force—reshaping a person&apos;s mind, altering their reality, and becoming their greatest enemy.
+                      </p>
+                    </>
+                  )}
+                </motion.div>
 
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-                onClick={() => setHideEasterEgg(true)}
-                className="px-8 py-3 bg-[#f5c66d]/10 text-[#f5c66d] border border-[#f5c66d]/30 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#f5c66d]/20 transition-colors"
-              >
-                Close
-              </motion.button>
+                <motion.h4
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 }}
+                  className="text-[#f5c66d] font-serif text-lg md:text-xl font-bold text-center mb-6 shrink-0"
+                >
+                  A Mahasterpiece.
+                </motion.h4>
+
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  onClick={() => setHideEasterEgg(true)}
+                  className="px-8 py-3 bg-[#f5c66d]/10 text-[#f5c66d] border border-[#f5c66d]/30 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#f5c66d]/20 transition-colors shrink-0"
+                >
+                  Close
+                </motion.button>
+              </div>
             </motion.div>
           </motion.div>
         )}
