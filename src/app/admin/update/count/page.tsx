@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile } from '@ffmpeg/util';
-import { Trash2, GripVertical, Upload, Film, BarChart3, AlertCircle } from 'lucide-react';
+import { Trash2, GripVertical, Upload, Film, BarChart3, AlertCircle, Image as ImageIcon } from 'lucide-react';
 import Image from 'next/image';
+import { useUploadThing, uploadFiles } from "@/lib/uploadthing";
 
 type Video = {
   id: string;
@@ -16,6 +17,13 @@ type Video = {
 };
 
 export default function AdminUpdateCountPage() {
+  const { startUpload } = useUploadThing("videoUploader", {
+    onUploadProgress: (p) => {
+      setUploadProgress(50 + (p / 2));
+      setUploadMessage(`Uploading: ${Math.round(p)}%`);
+    },
+  });
+
   const [activeTab, setActiveTab] = useState<"stats" | "videos">("stats");
 
   // Counters State
@@ -32,6 +40,8 @@ export default function AdminUpdateCountPage() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadMessage, setUploadMessage] = useState("");
   const [newTitle, setNewTitle] = useState("");
+  const [newVideoFile, setNewVideoFile] = useState<File | null>(null);
+  const [newPosterFile, setNewPosterFile] = useState<File | null>(null);
   const [draggedItemIndex, setDraggedItemIndex] = useState<number | null>(null);
   const dragItemIndexRef = useRef<number | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -134,13 +144,11 @@ export default function AdminUpdateCountPage() {
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
-    const file = e.target.files[0];
+  const handleFileUpload = async () => {
+    if (!newVideoFile) return;
 
     if (!newTitle) {
       alert("Please enter a video title before uploading.");
-      e.target.value = '';
       return;
     }
 
@@ -149,80 +157,47 @@ export default function AdminUpdateCountPage() {
     setUploadMessage("Preparing upload...");
 
     try {
-      let fileToUpload: File | Blob = file;
+      let fileToUpload: File | Blob = newVideoFile;
 
       // 100MB limit for raw upload
-      if (file.size > 100 * 1024 * 1024) {
+      if (newVideoFile.size > 100 * 1024 * 1024) {
         if (!isFfmpegLoaded) {
           alert("File is too large and FFmpeg is not loaded yet. Please wait a moment and try again.");
           setUploading(false);
-          e.target.value = '';
           return;
         }
 
         setUploadMessage("Compressing large video...");
         const ffmpeg = ffmpegRef.current;
-        await ffmpeg.writeFile(file.name, await fetchFile(file));
+        await ffmpeg.writeFile(newVideoFile.name, await fetchFile(newVideoFile));
 
         // Compress to 720p, 24fps to save space
-        await ffmpeg.exec(['-i', file.name, '-vf', 'scale=-2:720', '-r', '24', '-vcodec', 'libx264', '-crf', '28', '-preset', 'ultrafast', 'output.mp4']);
+        await ffmpeg.exec(['-i', newVideoFile.name, '-vf', 'scale=-2:720', '-r', '24', '-vcodec', 'libx264', '-crf', '28', '-preset', 'ultrafast', 'output.mp4']);
 
         const data = await ffmpeg.readFile('output.mp4');
         fileToUpload = new Blob([data as any], { type: 'video/mp4' });
       }
 
-      setUploadMessage("Uploading to Cloudinary...");
+      let posterUrl = null;
+      if (newPosterFile) {
+        setUploadMessage("Uploading thumbnail...");
+        const posterRes = await uploadFiles("imageUploader", { files: [newPosterFile] });
+        if (posterRes && posterRes.length > 0) {
+          posterUrl = posterRes[0].url;
+        }
+      }
+
+      setUploadMessage("Uploading video to UploadThing...");
       setUploadProgress(50); // Set to 50% starting upload phase
 
-      // Get Cloudinary Signature
-      const timestamp = Math.round((new Date).getTime() / 1000);
-      const paramsToSign = {
-        folder: 'raobahadur/event/videos',
-        timestamp: timestamp,
-      };
+      const finalFile = new File([fileToUpload], newVideoFile.name, { type: 'video/mp4' });
+      const utRes = await startUpload([finalFile]);
 
-      const signRes = await fetch('/api/admin/cloudinary-sign', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paramsToSign }),
-      });
-      const { signature, apiKey } = await signRes.json();
+      if (!utRes || utRes.length === 0) {
+        throw new Error("Upload failed");
+      }
 
-      if (!signature) throw new Error("Failed to get signature");
-
-      // Upload to Cloudinary
-      const formData = new FormData();
-      formData.append('file', fileToUpload);
-      formData.append('api_key', apiKey || process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '');
-      formData.append('timestamp', timestamp.toString());
-      formData.append('signature', signature);
-      formData.append('folder', 'raobahadur/event/videos');
-
-      // Use XMLHttpRequest for progress
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'uohqyl93'}/video/upload`);
-
-      xhr.upload.onprogress = (event) => {
-        if (event.lengthComputable) {
-          const percent = Math.round((event.loaded / event.total) * 100);
-          setUploadProgress(50 + (percent / 2)); // Second 50%
-          setUploadMessage(`Uploading: ${percent}%`);
-        }
-      };
-
-      const cloudinaryRes = await new Promise((resolve, reject) => {
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve(JSON.parse(xhr.responseText));
-          } else {
-            reject(JSON.parse(xhr.responseText));
-          }
-        };
-        xhr.onerror = () => reject(xhr.statusText);
-        xhr.send(formData);
-      });
-
-      const secureUrl = (cloudinaryRes as any).secure_url;
+      const secureUrl = utRes[0].url;
 
       setUploadMessage("Saving to database...");
 
@@ -233,11 +208,13 @@ export default function AdminUpdateCountPage() {
         body: JSON.stringify({
           title: newTitle,
           src: secureUrl,
+          poster: posterUrl,
         }),
       });
 
       setNewTitle("");
-      e.target.value = '';
+      setNewVideoFile(null);
+      setNewPosterFile(null);
       await fetchVideos();
       setUploadMessage("Upload complete!");
 
@@ -402,8 +379,8 @@ export default function AdminUpdateCountPage() {
 
         {activeTab === "videos" && (
           <div className="space-y-8">
-            <div className="bg-card/20 backdrop-blur-md border border-primary/20 p-6 rounded-2xl shadow-xl flex flex-col md:flex-row gap-4 items-end">
-              <div className="flex-1 w-full">
+            <div className="bg-card/20 backdrop-blur-md border border-primary/20 p-6 rounded-2xl shadow-xl flex flex-col gap-4">
+              <div className="w-full">
                 <label className="block text-sm font-medium mb-2 text-foreground/80">New Video Title</label>
                 <input
                   type="text"
@@ -414,19 +391,43 @@ export default function AdminUpdateCountPage() {
                   disabled={uploading}
                 />
               </div>
-              <div className="flex-1 w-full relative">
-                <input
-                  type="file"
-                  accept="video/mp4,video/quicktime"
-                  onChange={handleFileUpload}
-                  disabled={uploading || !newTitle}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
-                />
-                <Button variant="outline" className="w-full py-6 rounded-xl flex items-center justify-center space-x-2" disabled={uploading || !newTitle}>
-                  <Upload size={20} />
-                  <span>Select Video to Upload</span>
-                </Button>
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => e.target.files && setNewPosterFile(e.target.files[0])}
+                    disabled={uploading}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
+                  />
+                  <Button variant="outline" className={`w-full py-6 rounded-xl flex items-center justify-center space-x-2 ${newPosterFile ? 'border-primary text-primary' : ''}`} disabled={uploading}>
+                    <ImageIcon size={20} />
+                    <span>{newPosterFile ? newPosterFile.name : "Select Thumbnail Image"}</span>
+                  </Button>
+                </div>
+                <div className="flex-1 relative">
+                  <input
+                    type="file"
+                    accept="video/mp4,video/quicktime"
+                    onChange={(e) => e.target.files && setNewVideoFile(e.target.files[0])}
+                    disabled={uploading}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
+                  />
+                  <Button variant="outline" className={`w-full py-6 rounded-xl flex items-center justify-center space-x-2 ${newVideoFile ? 'border-primary text-primary' : ''}`} disabled={uploading}>
+                    <Film size={20} />
+                    <span>{newVideoFile ? newVideoFile.name : "Select Video File"}</span>
+                  </Button>
+                </div>
               </div>
+              <Button
+                variant="regal"
+                className="w-full py-6 rounded-xl flex items-center justify-center space-x-2 mt-2"
+                disabled={uploading || !newTitle || !newVideoFile}
+                onClick={handleFileUpload}
+              >
+                <Upload size={20} />
+                <span>{uploading ? "Uploading..." : "Upload New Video"}</span>
+              </Button>
             </div>
 
             {uploadMessage && (

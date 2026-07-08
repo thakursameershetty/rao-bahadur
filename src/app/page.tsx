@@ -143,23 +143,23 @@ function HourlySalesIndicator({ sales }: { sales: number }) {
 
 const SOCIAL_PROOF_IMAGES = [
   // Celeb tweets
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/celebrity_tweets/Tweets_11.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/celebrity_tweets/Tweets_23.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/celebrity_tweets/Tweets_27.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/celebrity_tweets/Tweets_28.jpg",
+  "https://utfs.io/f/630795fghEPYWsh1380jpEhLARqBIi8rDgvnYuybwSNkoJ1G",
+  "https://utfs.io/f/630795fghEPY7ZkCFAAHxKGjbUTXZp6qWvM2DwseV1AaECh9",
+  "https://utfs.io/f/630795fghEPYJyp0jKgNIuQvzwlXe7pnCVgi6fhK3MDjGOPb",
+  "https://utfs.io/f/630795fghEPYkmMrhC2dMUThqN50zrwvs3Pax1QloJyB4Cnc",
 
   // Regular tweets
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_2.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_9.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_10.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_19.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_24.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_26.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_30.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_31.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_32.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_33.jpg",
-  "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Tweets_34.jpg",
+  "https://utfs.io/f/630795fghEPYQ6YfiElBYzZlxhCtRc3KSN5X8pF7qijL4TQV",
+  "https://utfs.io/f/630795fghEPYQK8JMtBYzZlxhCtRc3KSN5X8pF7qijL4TQVs",
+  "https://utfs.io/f/630795fghEPY6ZARwlfghEPYBJkn0CZRDSwTVzqGy4pxQKFe",
+  "https://utfs.io/f/630795fghEPY1I8joeqiZQJyqhDzjeVCBdrP2GAIukwHfXpK",
+  "https://utfs.io/f/630795fghEPYfNtKBh0zXih3mZYdVKFB7Are9Hw6DEWjOJbu",
+  "https://utfs.io/f/630795fghEPYKxUOfuhG3ZMFTA745J9r1qHotXRuklmKdEps",
+  "https://utfs.io/f/630795fghEPYsC8v1gduLHvPr1mX9DMsw23jdRbBQG8W5ygz",
+  "https://utfs.io/f/630795fghEPYYa5z2PhN1SFDUY3jVAx8RudeoPLyfH2EzpBg",
+  "https://utfs.io/f/630795fghEPYfPKGbgzXih3mZYdVKFB7Are9Hw6DEWjOJbuv",
+  "https://utfs.io/f/630795fghEPYkV7NZI2dMUThqN50zrwvs3Pax1QloJyB4Cnc",
+  "https://utfs.io/f/630795fghEPYVxEny7A5oZKcUhqnCX3NQDrJuTMb8jviBHzp",
 ];
 
 function TweetMarquee() {
@@ -278,7 +278,7 @@ function CelebrityReactions() {
           <div key={video.id || idx} className="w-full md:w-[calc(50%-12px)]">
             <VideoCard
               src={video.src}
-              poster={video.poster || video.src.replace('.mp4', '.jpg')}
+              poster={video.poster || undefined}
               title={video.title}
               isActive={activeVideo === idx}
               isMuted={globalMuted}
@@ -479,8 +479,8 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {[
-              "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Review_1.jpg",
-              "https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/tweets/Review_2.jpg"
+              "https://utfs.io/f/630795fghEPY6K1V3DfghEPYBJkn0CZRDSwTVzqGy4pxQKFe",
+              "https://utfs.io/f/630795fghEPY4KQb4M8LonUxzpby6mCNg2fQ3stjYiZIwMEk"
             ].map((imgSrc, idx) => (
               <div
                 key={idx}

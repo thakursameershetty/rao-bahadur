@@ -14,11 +14,11 @@ interface CharactersState {
 }
 
 const defaultCharacters: Character[] = [
-  { id: 'Rao_bahadur', name: 'Rao bahadur', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Rao-Bahadur.jpg', likes: 0 },
-  { id: 'Renuka', name: 'Renuka', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Renuka.jpg', likes: 0 },
-  { id: 'Kusuma', name: 'Kusuma', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Kusuma.jpg', likes: 0 },
-  { id: 'Achari', name: 'Achari', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Achari.jpg', likes: 0 },
-  { id: 'Achamma', name: 'Achamma', image: 'https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/characters/Achamma.jpg', likes: 0 },
+  { id: 'Rao_bahadur', name: 'Rao bahadur', image: 'https://utfs.io/f/630795fghEPYb3flBHkA6KRopmn1gyVFIQHEfXa8SLM9zqJP', likes: 0 },
+  { id: 'Renuka', name: 'Renuka', image: 'https://utfs.io/f/630795fghEPYDLM2P1QseYgFSt3dzTLcv2jUorip08EOKkDZ', likes: 0 },
+  { id: 'Kusuma', name: 'Kusuma', image: 'https://utfs.io/f/630795fghEPY4QY0aoe8LonUxzpby6mCNg2fQ3stjYiZIwME', likes: 0 },
+  { id: 'Achari', name: 'Achari', image: 'https://utfs.io/f/630795fghEPYzFF4MIYH8kLMjxnNofVCm4PiWrYcd6Zg2Jws', likes: 0 },
+  { id: 'Achamma', name: 'Achamma', image: 'https://utfs.io/f/630795fghEPYWi72MC0jpEhLARqBIi8rDgvnYuybwSNkoJ1G', likes: 0 },
 ];
 
 export const useCharactersStore = create<CharactersState>((set) => ({

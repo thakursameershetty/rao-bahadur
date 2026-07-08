@@ -1,33 +1,46 @@
-const cloudinary = require('cloudinary').v2;
+const { UTApi } = require("uploadthing/server");
 const path = require('path');
+const fs = require('fs');
 
-// This requires the CLOUDINARY_URL environment variable to be set.
-// e.g. export CLOUDINARY_URL="cloudinary://API_KEY:API_SECRET@CLOUD_NAME"
+// Note: Run this script using Node's native env file support:
+// node --env-file=.env.local scripts/upload-characters.js
 
 const charactersDir = path.join(__dirname, '../public/characters');
 const files = ['Achamma.jpg', 'Achari.jpg', 'Kusuma.jpg', 'Renuka.jpg'];
 
 async function uploadImages() {
-  if (!process.env.CLOUDINARY_URL) {
-    console.error("❌ Error: CLOUDINARY_URL environment variable is missing.");
-    console.log("Please run this script with your Cloudinary URL like so:");
-    console.log('CLOUDINARY_URL="cloudinary://API_KEY:API_SECRET@CLOUD_NAME" node scripts/upload-characters.js');
+  if (!process.env.UPLOADTHING_TOKEN) {
+    console.error("❌ Error: UPLOADTHING_TOKEN environment variable is missing in .env.local");
     process.exit(1);
   }
 
-  for (const file of files) {
-    const filePath = path.join(charactersDir, file);
+  const utapi = new UTApi();
+
+  for (const fileName of files) {
+    const filePath = path.join(charactersDir, fileName);
+    
+    if (!fs.existsSync(filePath)) {
+      console.warn(`⚠️ Warning: File not found: ${filePath}`);
+      continue;
+    }
+
     try {
-      console.log(`Uploading ${file}...`);
-      const result = await cloudinary.uploader.upload(filePath, {
-        folder: 'raobahadur/characters',
-        use_filename: true,
-        unique_filename: false,
-        overwrite: true,
-      });
-      console.log(`✅ Uploaded ${file}: ${result.secure_url}`);
+      console.log(`Uploading ${fileName} to UploadThing...`);
+      
+      const buffer = fs.readFileSync(filePath);
+      
+      // Node 20+ has global File
+      const fileObj = new File([buffer], fileName, { type: 'image/jpeg' });
+      
+      const response = await utapi.uploadFiles([fileObj]);
+      
+      if (response[0].error) {
+        throw new Error(response[0].error.message);
+      }
+      
+      console.log(`✅ Uploaded ${fileName}: ${response[0].data.url}`);
     } catch (error) {
-      console.error(`❌ Failed to upload ${file}:`, error);
+      console.error(`❌ Failed to upload ${fileName}:`, error);
     }
   }
 }

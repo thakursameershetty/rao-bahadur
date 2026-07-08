@@ -699,7 +699,7 @@ function FanPageContent() {
                   className="relative w-24 h-24 md:w-32 md:h-32 mx-auto my-6 md:my-10 shrink-0"
                 >
                   <Image
-                    src="https://res.cloudinary.com/uohqyl93/image/upload/v1783453448/raobahadur/insect.png"
+                    src="https://utfs.io/f/630795fghEPYoswxBxTBikfGSe1NtD7Whl5c9wZvVYqPb32R"
                     alt="The Insect"
                     fill
                     className="object-contain drop-shadow-[0_0_15px_rgba(245,198,109,0.4)]"
