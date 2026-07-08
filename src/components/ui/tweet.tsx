@@ -2,7 +2,7 @@
 
 import { enrichTweet, type EnrichedTweet } from "react-tweet";
 import { cn } from "@/lib/utils";
-import { Check, Link2, Bookmark, Share, MessageCircle, Trash2 } from "lucide-react";
+import { Check, Link2, Bookmark, Share, MessageCircle, Trash2, Pencil } from "lucide-react";
 import { UpvoteIconButton } from "@/components/ui/upvote-icon-button";
 import { useState } from "react";
 import { Facehash } from "facehash";
@@ -61,12 +61,16 @@ const TweetHeader = ({
   tweet,
   showDelete,
   onDelete,
+  showEdit,
+  onEdit,
   isSaved,
   onSave
 }: {
   tweet: EnrichedTweet;
   showDelete?: boolean;
   onDelete?: () => void;
+  showEdit?: boolean;
+  onEdit?: () => void;
   isSaved?: boolean;
   onSave?: (isSaved: boolean) => void;
 }) => (
@@ -108,6 +112,19 @@ const TweetHeader = ({
         <a href={tweet.url} target="_blank" rel="noopener noreferrer" className="p-1.5 pointer-events-auto">
           <Bookmark className="size-5 text-muted-foreground transition-colors hover:text-primary" />
         </a>
+      )}
+      {showEdit && (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onEdit?.();
+          }}
+          className="text-muted-foreground hover:text-primary transition-colors p-1.5 rounded-full hover:bg-primary/10 z-10 pointer-events-auto"
+          title="Edit theory"
+        >
+          <Pencil className="size-4" />
+        </button>
       )}
       {showDelete && (
         <button
@@ -366,6 +383,8 @@ interface TweetContentProps {
   initialUpvoted?: boolean;
   showDelete?: boolean;
   onDelete?: () => void;
+  showEdit?: boolean;
+  onEdit?: () => void;
   onUpvote?: (isUpvoted: boolean) => boolean | Promise<boolean> | void;
   isSaved?: boolean;
   onSave?: (isSaved: boolean) => void;
@@ -380,6 +399,8 @@ const TweetContent = ({
   initialUpvoted,
   showDelete,
   onDelete,
+  showEdit,
+  onEdit,
   onUpvote,
   isSaved,
   onSave,
@@ -392,7 +413,7 @@ const TweetContent = ({
       )}
     >
       <div>
-        <TweetHeader tweet={tweet} showDelete={showDelete} onDelete={onDelete} isSaved={isSaved} onSave={onSave} />
+        <TweetHeader tweet={tweet} showDelete={showDelete} onDelete={onDelete} showEdit={showEdit} onEdit={onEdit} isSaved={isSaved} onSave={onSave} />
         <TweetBody tweet={tweet} />
         <TweetMedia tweet={tweet} />
       </div>
@@ -417,6 +438,8 @@ interface TweetProps {
   initialUpvoted?: boolean;
   showDelete?: boolean;
   onDelete?: () => void;
+  showEdit?: boolean;
+  onEdit?: () => void;
   onUpvote?: (isUpvoted: boolean) => boolean | Promise<boolean> | void;
   isSaved?: boolean;
   onSave?: (isSaved: boolean) => void;
@@ -431,6 +454,8 @@ export const Tweet = ({
   initialUpvoted = false,
   showDelete = false,
   onDelete,
+  showEdit = false,
+  onEdit,
   onUpvote,
   isSaved,
   onSave
@@ -447,6 +472,8 @@ export const Tweet = ({
       initialUpvoted={initialUpvoted}
       showDelete={showDelete}
       onDelete={onDelete}
+      showEdit={showEdit}
+      onEdit={onEdit}
       onUpvote={onUpvote}
       isSaved={isSaved}
       onSave={onSave}

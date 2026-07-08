@@ -26,6 +26,13 @@ export async function GET(request: Request) {
       const maxUpvotesResult = await prisma.theory.aggregate({ _max: { upvotes: true } });
       const maxUpvotes = maxUpvotesResult._max.upvotes || 0;
 
+      const top2CommentTheories = await prisma.theory.findMany({
+        take: 2,
+        orderBy: { comments: { _count: 'desc' } },
+        select: { id: true, _count: { select: { comments: true } } }
+      });
+      const top2CommentIds = new Set(top2CommentTheories.filter(t => t._count.comments > 0).map(t => t.id));
+
       return NextResponse.json({
         id: theory.id,
         title: theory.title,
@@ -34,6 +41,7 @@ export async function GET(request: Request) {
         tag: theory.tag,
         isTrending: top5Ids.has(theory.id),
         isTrendingThroughLikes: maxUpvotes > 0 && theory.upvotes === maxUpvotes,
+        isTrendingThroughReplies: top2CommentIds.has(theory.id),
         upvotes: theory.upvotes,
         clicks: theory.clicks,
         comments: theory._count.comments,
@@ -54,6 +62,9 @@ export async function GET(request: Request) {
     });
 
     // Format for client
+    const sortedByComments = [...theories].sort((a, b) => b._count.comments - a._count.comments);
+    const top2CommentIds = new Set(sortedByComments.slice(0, 2).filter(t => t._count.comments > 0).map(t => t.id));
+
     const formatted = theories.map((t: any) => ({
       id: t.id,
       title: t.title,
@@ -62,6 +73,7 @@ export async function GET(request: Request) {
       tag: t.tag,
       isTrending: top5Ids.has(t.id),
       isTrendingThroughLikes: maxUpvotesArray > 0 && t.upvotes === maxUpvotesArray,
+      isTrendingThroughReplies: top2CommentIds.has(t.id),
       upvotes: t.upvotes,
       clicks: t.clicks,
       comments: t._count.comments,

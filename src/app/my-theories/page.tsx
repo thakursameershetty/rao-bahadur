@@ -6,10 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Tweet } from "@/components/ui/tweet";
 import { useSession } from "@/hooks/useSession";
 import { SessionModal } from "@/components/ui/SessionModal";
+import { useRouter } from "next/navigation";
 
 const fetcher = (url: string) => fetch(url).then(r => r.json());
 
 export default function MyTheoriesPage() {
+  const router = useRouter();
   const { data: theories, error, mutate } = useSWR("/api/theories?sort=new", fetcher);
   const { isReady, username, hasUpvoted, toggleUpvote, hasSaved, toggleSave } = useSession();
 
@@ -211,6 +213,8 @@ export default function MyTheoriesPage() {
                       onSave={(isSaved) => toggleSave(theory.id, isSaved)}
                       showDelete={filter === "My Theories"}
                       onDelete={() => setTheoryToDelete(theory.id)}
+                      showEdit={filter === "My Theories"}
+                      onEdit={() => router.push(`/theory/${theory.id}?action=edit`)}
                     />
                   </div>
                 </motion.div>

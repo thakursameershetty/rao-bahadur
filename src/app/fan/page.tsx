@@ -113,6 +113,36 @@ function FanPageContent() {
   const [hideEasterEgg, setHideEasterEgg] = useState(false);
   const [isTelugu, setIsTelugu] = useState(false);
 
+  // Marketing Popup State
+  const [showMarketingPopup, setShowMarketingPopup] = useState(false);
+  const marketingShownRef = useRef(false);
+  const bottomPopupShownRef = useRef(false);
+
+  useEffect(() => {
+    const checkTimer = () => {
+      const nextShowStr = sessionStorage.getItem("marketing_popup_next_show");
+      if (nextShowStr) {
+        const nextShow = parseInt(nextShowStr, 10);
+        if (Date.now() >= nextShow) {
+          setShowMarketingPopup(true);
+          sessionStorage.removeItem("marketing_popup_next_show");
+        }
+      }
+    };
+
+    checkTimer();
+    const interval = setInterval(checkTimer, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleDismissPopup = () => {
+    setShowMarketingPopup(false);
+    sessionStorage.setItem("marketing_popup_dismissed", "true");
+    // Random delay between 5 to 10 minutes (300,000 to 600,000 ms)
+    const randomDelay = Math.floor(Math.random() * (600000 - 300000 + 1)) + 300000;
+    sessionStorage.setItem("marketing_popup_next_show", (Date.now() + randomDelay).toString());
+  };
+
   useEffect(() => {
     setHideEasterEgg(false);
     if (checkEasterEggMatch(searchQuery)) {
@@ -160,8 +190,24 @@ function FanPageContent() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-      setIsDeepScrolled(window.scrollY > 1500);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 100);
+      setIsDeepScrolled(scrollY > 1500);
+
+      // Normal depth trigger (happens once per session unless dismissed then timer takes over)
+      if (scrollY > 3000 && !marketingShownRef.current && !sessionStorage.getItem("marketing_popup_dismissed")) {
+        marketingShownRef.current = true;
+        setShowMarketingPopup(true);
+      }
+
+      // Bottom of page trigger (happens irrespective of timer/dismissal)
+      const isAtBottom = window.innerHeight + scrollY >= document.documentElement.scrollHeight - 50;
+      if (isAtBottom && !bottomPopupShownRef.current) {
+        bottomPopupShownRef.current = true;
+        setShowMarketingPopup(true);
+      } else if (!isAtBottom) {
+        bottomPopupShownRef.current = false;
+      }
     };
 
     const handleUserInteractionScroll = () => {
@@ -210,6 +256,16 @@ function FanPageContent() {
         }
       });
     }
+
+    const highestCommentTheories = filteredTheories.filter((t: any) => t.isTrendingThroughReplies);
+    highestCommentTheories.forEach((ht: any) => {
+      const existingIndex = trendingList.findIndex((t: any) => t.id === ht.id);
+      if (existingIndex !== -1) {
+        trendingList[existingIndex].isTrendingThroughReplies = true;
+      } else {
+        trendingList.unshift({ ...ht, isTrendingThroughReplies: true });
+      }
+    });
 
     filteredTheories = trendingList;
   } else if (filter === "New") {
@@ -702,6 +758,76 @@ function FanPageContent() {
                 >
                   Close
                 </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Marketing Popup Overlay */}
+      <AnimatePresence>
+        {showMarketingPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-xl p-4"
+            onClick={handleDismissPopup}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative max-w-md w-full bg-card/90 border border-[#f5c66d]/20 rounded-3xl overflow-hidden shadow-2xl flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDismissPopup();
+                }}
+                className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/80 rounded-full transition-colors text-white backdrop-blur-md"
+                aria-label="Close popup"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+
+              <div className="relative w-full aspect-[2/3] max-h-[40vh]">
+                <Image
+                  src="https://m.media-amazon.com/images/M/MV5BMGM4MTlmODYtMWVkMi00MWM0LThlYTQtZDc5OTg1MDI5MGJlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+                  alt="Rao Bahadur Poster"
+                  fill
+                  unoptimized={true}
+                  className="object-cover object-top"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/20 to-transparent pointer-events-none" />
+              </div>
+
+              <div className="p-6 md:p-8 flex flex-col items-center text-center relative z-10 -mt-12 bg-gradient-to-t from-card via-card to-transparent">
+                <h3 className="font-serif text-2xl md:text-3xl text-gradient-gold uppercase tracking-wider mb-3">
+                  Are you excited?
+                </h3>
+                <p className="text-muted-foreground text-sm md:text-base mb-8">
+                  Wanna rewatch the MAHAsterpiece?<br />
+                  Find it in your nearby theatres.
+                </p>
+
+                <div className="flex flex-row justify-center gap-4 w-full mt-2">
+                  <a href="https://in.bookmyshow.com/movies/rao-bahadur/ET00458566" target="_blank" rel="noopener noreferrer" className="flex-1" onClick={handleDismissPopup}>
+                    <button type="button" className="w-full p-0 overflow-hidden rounded-xl bg-red-600/10 hover:bg-red-600/20 border border-red-500/50 shadow-[0_0_15px_rgba(220,38,38,0.3)] h-12 md:h-14 group transition-colors">
+                      <img src="https://cdn.aptoide.com/imgs/c/7/9/c7948850a706fca8904015c9809f7ca4_fgraphic.jpg" alt="BookMyShow" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    </button>
+                  </a>
+                  <a href="https://www.district.in/movies/rao-bahadur-movie-tickets-MV204022" target="_blank" rel="noopener noreferrer" className="flex-1" onClick={handleDismissPopup}>
+                    <button type="button" className="w-full p-0 overflow-hidden rounded-xl bg-purple-600/10 hover:bg-purple-600/20 border border-purple-500/50 shadow-[0_0_15px_rgba(147,51,234,0.3)] h-12 md:h-14 group transition-colors">
+                      <img src="https://media.licdn.com/dms/image/v2/D5612AQENNmUosxgwGA/article-cover_image-shrink_720_1280/B56ZfY173vHoAI-/0/1751689708143?e=2147483647&v=beta&t=sDcVqA3slVmKQ9730YaH69Kde3XpGyEWVK1XoOTdfw4" alt="District" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    </button>
+                  </a>
+                </div>
               </div>
             </motion.div>
           </motion.div>
