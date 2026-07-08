@@ -483,23 +483,30 @@ export default function TheoryPage() {
                   </div>
 
                   {/* Text */}
-                  <span className={`text-[12px] md:text-[13px] font-medium tracking-wide flex-1 text-center leading-snug transition-colors duration-700 ${showGlow ? 'text-foreground' : 'text-foreground/70'}`}>
-                    Discover this MAHAsterpiece<br />in your nearby cinemas
-                  </span>
+                  <div className="flex flex-col flex-1 items-start justify-center mr-1">
+                    <span className={`text-[11px] md:text-[12px] font-medium tracking-tight text-left leading-tight transition-colors duration-700 ${showGlow ? 'text-foreground' : 'text-foreground/70'}`}>
+                      Discover this MAHAsterpiece in your nearby cinemas
+                    </span>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            <motion.div layout className={`flex items-center justify-end h-full transition-all duration-500 ease-in-out ${isPillExpanded ? 'w-full gap-3' : 'shrink-0 pr-2 -space-x-3'}`}>
+            <motion.div layout className={`flex items-center justify-end h-full transition-all duration-500 ease-in-out ${isPillExpanded ? 'w-full gap-3' : 'shrink-0 pr-1'}`}>
               {!isPillExpanded ? (
-                <>
-                  <motion.div layoutId="bms-morph" className="relative w-8 h-8 rounded-full border-[2px] border-[#0a0a0a] z-10 shadow-sm overflow-hidden bg-white shrink-0">
-                    <img src="https://play-lh.googleusercontent.com/TB_8RMvDjxGmx06LBK-8opRFJ0msb6hSZalEtOMBmxgJ4jYE_i0BmdRuMWChCE76tLnxoytZ75Cew_r0_JDd" alt="BookMyShow" className="absolute inset-0 w-full h-full object-cover" />
-                  </motion.div>
-                  <motion.div layoutId="district-morph" className="relative w-8 h-8 rounded-full border-[2px] border-[#0a0a0a] z-0 shadow-sm overflow-hidden bg-white shrink-0">
-                    <img src="https://play-lh.googleusercontent.com/t0LH2EDF97k1-d2i8kSh_vUlZlnntAGWRYIX8BVSRSAyMGUlNAraa-q4kez1YMKQmGc_9BeEFGmD3wTud5NDOg=w240-h480-rw" alt="District App" className="absolute inset-0 w-full h-full object-cover" />
-                  </motion.div>
-                </>
+                <div className="flex items-center bg-gradient-to-r from-[#f5c66d] via-[#fbe8a6] to-[#f5c66d] border border-[#f5c66d]/50 rounded-full pl-2 pr-0.5 py-0.5 gap-1.5 shadow-[0_0_12px_rgba(245,198,109,0.3)]">
+                  <span className="text-[9px] font-extrabold text-[#523800] uppercase tracking-normal whitespace-nowrap">
+                    Book Here
+                  </span>
+                  <div className="flex items-center -space-x-2">
+                    <motion.div layoutId="bms-morph" className="relative w-7 h-7 rounded-full border border-[#0a0a0a] z-10 shadow-sm overflow-hidden bg-white shrink-0">
+                      <img src="https://play-lh.googleusercontent.com/TB_8RMvDjxGmx06LBK-8opRFJ0msb6hSZalEtOMBmxgJ4jYE_i0BmdRuMWChCE76tLnxoytZ75Cew_r0_JDd" alt="BookMyShow" className="absolute inset-0 w-full h-full object-cover" />
+                    </motion.div>
+                    <motion.div layoutId="district-morph" className="relative w-7 h-7 rounded-full border border-[#0a0a0a] z-0 shadow-sm overflow-hidden bg-white shrink-0">
+                      <img src="https://play-lh.googleusercontent.com/t0LH2EDF97k1-d2i8kSh_vUlZlnntAGWRYIX8BVSRSAyMGUlNAraa-q4kez1YMKQmGc_9BeEFGmD3wTud5NDOg=w240-h480-rw" alt="District App" className="absolute inset-0 w-full h-full object-cover" />
+                    </motion.div>
+                  </div>
+                </div>
               ) : (
                 <>
                   <motion.a layoutId="bms-morph" href="https://in.bookmyshow.com/movies/rao-bahadur/ET00458566" target="_blank" rel="noopener noreferrer" className="flex-1 rounded-full overflow-hidden bg-red-600/10 hover:bg-red-600/20 border border-red-500/50 shadow-[0_0_15px_rgba(220,38,38,0.3)] h-full relative group block">
