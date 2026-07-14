@@ -164,9 +164,65 @@ const SOCIAL_PROOF_IMAGES = [
 
 function TweetMarquee() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const set1Ref = useRef<HTMLDivElement>(null);
+  const hasInitializedScroll = useRef(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
+  const isInView = useInView(scrollRef);
 
   const { data: imagesData } = useSWR('/api/admin/images?category=TWEETS', fetcher, { refreshInterval: 5000 });
   const tweets = Array.isArray(imagesData) && imagesData.length > 0 ? imagesData.map(img => img.src) : SOCIAL_PROOF_IMAGES;
+
+  useEffect(() => {
+    let animationFrameId: number;
+    const scrollNode = scrollRef.current;
+    const set1Node = set1Ref.current;
+    if (!scrollNode || !set1Node) return;
+
+    if (isInView && !hasInitializedScroll.current) {
+      // Offset by roughly 1 images (approx 800px) from the end of set 1.
+      // This means the user will see the last 1 images scroll by before image 0 appears.
+      const startPos = Math.max(0, set1Node.offsetWidth - 250);
+      scrollNode.scrollLeft = startPos;
+      hasInitializedScroll.current = true;
+    }
+
+    let floatScroll = scrollNode.scrollLeft;
+    let lastScrollTime = performance.now();
+
+    const scroll = (time: number) => {
+      const delta = time - lastScrollTime;
+      lastScrollTime = time;
+
+      // Don't auto-scroll if not in view, if an image is expanded, or user is actively touching/swiping
+      if (isInView && !selectedImage && !isTouched) {
+        // Sync floatScroll if user manually scrolled
+        if (Math.abs(scrollNode.scrollLeft - floatScroll) > 2) {
+          floatScroll = scrollNode.scrollLeft;
+        }
+
+        // Auto-scroll speed: ~80 pixels per second normally, ~20 pixels when hovered
+        const speed = isHovered ? 20 : 80;
+        floatScroll += (speed * delta) / 1000;
+
+        // Loop back seamlessly
+        if (floatScroll >= set1Node.offsetWidth) {
+          floatScroll -= set1Node.offsetWidth;
+        }
+
+        scrollNode.scrollLeft = floatScroll;
+      } else {
+        floatScroll = scrollNode.scrollLeft;
+      }
+
+      animationFrameId = requestAnimationFrame(scroll);
+    };
+
+    animationFrameId = requestAnimationFrame(scroll);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isHovered, isTouched, selectedImage, isInView]);
 
   return (
     <div id="buzz" className="w-full overflow-hidden whitespace-nowrap py-20 border-y border-border/30 relative">
@@ -178,25 +234,49 @@ function TweetMarquee() {
       </div>
 
       <style>{`
-        @keyframes marquee-scroll {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
 
       <div
-        className="inline-block"
-        style={{
-          animation: 'marquee-scroll 120s linear infinite',
-          animationPlayState: selectedImage ? 'paused' : 'running'
-        }}
+        ref={scrollRef}
+        className="flex w-full overflow-x-auto hide-scrollbar py-4 px-4 items-center"
+        style={{ WebkitOverflowScrolling: 'touch' }}
+        onTouchStart={() => setIsTouched(true)}
+        onTouchEnd={() => setIsTouched(false)}
       >
-        <div className="flex space-x-6 px-4 items-center">
-          {[...tweets, ...tweets, ...tweets].map((imgSrc, i) => (
+        <div ref={set1Ref} className="flex gap-6 pr-6 items-center">
+          {tweets.map((imgSrc, i) => (
             <div
-              key={`${i}`}
+              key={`set1-${i}`}
               className="relative w-[300px] sm:w-[380px] h-auto flex-shrink-0 rounded-xl overflow-hidden border border-primary/20 shadow-lg bg-card/20 backdrop-blur-sm group cursor-pointer"
               onClick={() => setSelectedImage(imgSrc)}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <Image
+                src={imgSrc}
+                alt="Celebrity Tweet"
+                width={380}
+                height={200}
+                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-6 pr-6 items-center">
+          {tweets.map((imgSrc, i) => (
+            <div
+              key={`set2-${i}`}
+              className="relative w-[300px] sm:w-[380px] h-auto flex-shrink-0 rounded-xl overflow-hidden border border-primary/20 shadow-lg bg-card/20 backdrop-blur-sm group cursor-pointer"
+              onClick={() => setSelectedImage(imgSrc)}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             >
               <Image
                 src={imgSrc}

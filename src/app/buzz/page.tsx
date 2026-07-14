@@ -17,8 +17,8 @@ export default function BuzzPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const { data: letterboxData } = useSWR('/api/admin/images?category=LETTERBOX', fetcher, { refreshInterval: 5000 });
-  const letterboxImages = Array.isArray(letterboxData) && letterboxData.length > 0 
-    ? letterboxData.map(img => img.src) 
+  const letterboxImages = Array.isArray(letterboxData) && letterboxData.length > 0
+    ? letterboxData.map(img => img.src)
     : Array.from({ length: 15 }).map((_, i) => `https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/letterboxd/letterboxd_${i + 1}.jpg`);
 
   return (
