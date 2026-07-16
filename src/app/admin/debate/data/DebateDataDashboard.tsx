@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import type { DebateRegistration } from "@prisma/client";
 import { Users, Search, Download, LayoutGrid, List, Trash2, CheckSquare } from "lucide-react";
 import { deleteDebateRegistration, bulkDeleteDebateRegistrations } from "@/app/debate/actions";
@@ -11,6 +12,21 @@ export default function DebateDataDashboard({
   initialRegistrations: DebateRegistration[];
 }) {
   const [registrations, setRegistrations] = useState(initialRegistrations);
+  const router = useRouter();
+
+  useEffect(() => {
+    setRegistrations(initialRegistrations);
+  }, [initialRegistrations]);
+
+  useEffect(() => {
+    // Poll the server every 5 seconds for new registrations
+    const intervalId = setInterval(() => {
+      router.refresh();
+    }, 5000);
+    
+    return () => clearInterval(intervalId);
+  }, [router]);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
   const [sortOption, setSortOption] = useState<"newest" | "oldest" | "nameAsc" | "nameDesc">("newest");
