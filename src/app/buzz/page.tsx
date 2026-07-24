@@ -19,7 +19,23 @@ export default function BuzzPage() {
   const { data: letterboxData } = useSWR('/api/admin/images?category=LETTERBOX', fetcher, { refreshInterval: 5000 });
   const letterboxImages = Array.isArray(letterboxData) && letterboxData.length > 0
     ? letterboxData.map(img => img.src)
-    : Array.from({ length: 15 }).map((_, i) => `https://res.cloudinary.com/uohqyl93/image/upload/raobahadur/event/letterboxd/letterboxd_${i + 1}.jpg`);
+    : [
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYfvdqemzXih3mZYdVKFB7Are9Hw6DEWjOJbuv",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYDvndi3HQseYgFSt3dzTLcv2jUorip08EOKkD",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYJFy19gNIuQvzwlXe7pnCVgi6fhK3MDjGOPby",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYl30SOKGa85tjVNEnF16LSYUmHQukXvTJr2ad",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPY6O7uUvfghEPYBJkn0CZRDSwTVzqGy4pxQKFe",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPY5S0v6kC016MTyfcLUrNGDmPJA3S29FIkveXt",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPY7uAxGJHxKGjbUTXZp6qWvM2DwseV1AaECh9n",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPY7Gc8VyHxKGjbUTXZp6qWvM2DwseV1AaECh9n",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYUJGm0c6ZimRNvOC7PUD4nyS2h6xkQLAYsreJ",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYkFSpCz2dMUThqN50zrwvs3Pax1QloJyB4Cnc",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYzlSH4koYH8kLMjxnNofVCm4PiWrYcd6Zg2Jw",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYeg7VZ64dl2mbLxDY38FSyMEBTRpaN6JhWXsf",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYaC710FSfi1v7JW62YqFVDZ0bEMSIQBpkltXL",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYozLby4TBikfGSe1NtD7Whl5c9wZvVYqPb32R",
+      "https://p1o08011bi.ufs.sh/f/630795fghEPYJ1c9uGgNIuQvzwlXe7pnCVgi6fhK3MDjGOPb"
+    ];
 
   return (
     <div className="min-h-screen flex flex-col pt-28 md:pt-40 pb-12 px-4 container mx-auto space-y-24">
